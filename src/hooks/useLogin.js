@@ -22,10 +22,8 @@ const useLogin = ({ username, password }, navigation) => {
         password: password,
       });
       if (response.StatusCode === 6000) {
-        console.log(response);
-        saveItem('token', response?.data?.access?.access);
+        saveItem('token', response?.data?.access_token);
         saveItem('role', response.data.roles[0]);
-        console.log(response.data.roles[0], 'rolee');
         if (response.data.pk) {
           saveItem('user_id', response.data.pk);
         }
@@ -37,7 +35,7 @@ const useLogin = ({ username, password }, navigation) => {
             user_id: response.data.pk,
           }),
         );
-
+        
         // Navigate to Home screen after successful login
         navigation.navigate('MainTab');
       }

@@ -29,19 +29,18 @@ const HomeScreen = () => {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     axiosInstance.get('accounts/store-home-count/').then(res => {
-      console.log(res.data, '____jjjjjj');
-      setUserData(res.data.data);
+      setUserData(res.data.app_data.data.data);
     });
   }, []);
   useEffect(() => {
     axiosInstance.get('accounts/store-orders-list/').then(res => {
-      console.log(res.data);
       setOrders(res.data.data);
     });
   }, []);
   const {data} = useGetapi('accounts/store-home-count/');
+  
   const navigations = useNavigation();
-  console.log(userData, '_____hello___');
+
   return (
     <View style={styles.container}>
       <ImageBackground source={CoverBg} style={styles.backContainer}>
