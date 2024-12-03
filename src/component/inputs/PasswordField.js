@@ -38,8 +38,9 @@ const PasswordField = ({placeholder, onChangeText, value}) => {
           <Image
             source={secureTextEntry ? icons.show : icons.hide}
             style={{
-              width: 20,
-              height: 20,
+              width: 25,
+              height: 25,
+              marginRight: 5,
             }}
           />
         </TouchableOpacity>
@@ -50,7 +51,7 @@ const PasswordField = ({placeholder, onChangeText, value}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // marginTop: 5,
+    marginTop: 5,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -61,7 +62,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 5,
-    // padding: 10,
   },
   input: {
     flex: 1,
