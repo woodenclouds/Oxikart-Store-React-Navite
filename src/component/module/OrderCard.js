@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import {ColorBox} from '../../assets/svg-icons';
 
 const OrderCard = ({item, openModal, setSelectedOrder}) => {
-  console.log(item?.costumer_details[0]?.full_name);
   return (
     <View
       style={{

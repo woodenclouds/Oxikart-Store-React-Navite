@@ -14,18 +14,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setUserInfo} from '../../store/actions/userActions';
 import useGetapi from '../../hooks/useGetapi';
 import axiosInstance from '../../component/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
   const {user_id} = useSelector(state => state.user);
-  console.log(user_id);
 
   const handleLogout = async () => {
     // Handle logout logic here
-    await saveItem('token', '');
-    await saveItem('role', '');
+    // await saveItem('token', '');
+    // await saveItem('role', '');
+    AsyncStorage.clear()
+      .then(() => console.log('AsyncStorage cleared'))
+      .catch(e => console.log('AsyncStorage error: ', e));
     dispatch(setUserInfo({isVerified: false, token: '', role: ''}));
   };
   useEffect(() => {
@@ -64,7 +67,9 @@ const ProfileScreen = () => {
           <Text style={styles.infoText}>{userData?.address_1}</Text>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={() => handleLogout()}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>

@@ -9,12 +9,13 @@ import DeliveryStack from './DeliveryStack';
 
 const AppNavigator = () => {
   const dispatch = useDispatch();
+  const userState = useSelector(state => state.user);
+
   const fetchData = async () => {
     const token = await getItem('token');
     const role = await getItem('role');
     const user_id = await getItem('user_id');
-    console.log(token, 'tokeeennn');
-    console.log(userState, userState.role, 'role::::');
+
     if (token) {
       dispatch(
         setUserInfo({
@@ -27,11 +28,9 @@ const AppNavigator = () => {
     }
   };
 
-  
   React.useEffect(() => {
     fetchData();
   }, []);
-  const userState = useSelector(state => state.user);
 
   if (userState.isVerified && userState.role === 'Store') {
     return <AppStack />;

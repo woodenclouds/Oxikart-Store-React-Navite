@@ -3,6 +3,7 @@ import {
   Image,
   ImageBackground,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -23,26 +24,44 @@ import OrderCard from '../../component/module/OrderCard';
 import useGetapi from '../../hooks/useGetapi';
 import axiosInstance from '../../component/api';
 import {useNavigation} from '@react-navigation/native';
+import Loading from '../../component/Loading';
 
 const HomeScreen = () => {
-  const [userData, setUserData] = useState({});
+  const [homeCount, setHomeCount] = useState({});
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    axiosInstance.get('accounts/store-home-count/').then(res => {
-      setUserData(res.data.app_data.data.data);
-    });
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get('accounts/store-home-count/');
+        setHomeCount(response.data.app_data.data.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
+
   useEffect(() => {
     axiosInstance.get('accounts/store-orders-list/').then(res => {
-      setOrders(res.data.data);
+      setOrders(res.data.app_data.data.data);
     });
   }, []);
-  const {data} = useGetapi('accounts/store-home-count/');
-  
+  // const {data} = useGetapi('accounts/store-home-count/');
+
   const navigations = useNavigation();
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#007DDC" barStyle="light-content" />
       <ImageBackground source={CoverBg} style={styles.backContainer}>
         <View>
           <Image source={Logo} />
@@ -122,49 +141,49 @@ const HomeScreen = () => {
       </ImageBackground>
       <View
         style={{
-          paddingTop: 110,
+          paddingTop: 85,
           paddingHorizontal: 20,
           backgroundColor: '#f9fbfc',
         }}>
         <HomeCard
           icon={<ProfileSvg />}
           title="Total delivery boys"
-          number={userData.delivery_boys_count}
+          number={homeCount.delivery_boys_count}
         />
         <HomeCard
           icon={<DeliveryIcon />}
           title="Pending Returns"
-          number={userData.pending_return_count}
+          number={homeCount.pending_return_count}
         />
       </View>
-      <ScrollView>
-        <View
+      <View
+        style={{
+          paddingVertical: 20,
+          paddingHorizontal: 20,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <Text style={{fontSize: 16, color: '#0A0A0A', fontWeight: '500'}}>
+          Recent orders
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigations.navigate('Order')}
           style={{
-            paddingVertical: 20,
-            paddingHorizontal: 20,
+            display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-          <Text style={{fontSize: 16, color: '#0A0A0A'}}>Recent orders</Text>
-          <TouchableOpacity
-            onPress={() => navigations.navigate('Order')}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text style={{color: '#007DDC', marginRight: 6}}>View all</Text>
-            <RightArrow />
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          contentContainerStyle={{paddingHorizontal: 20, gap: 10}}
-          data={orders}
-          renderItem={({item}) => <OrderCard item={item} />}
-          keyExtractor={item => item.id}
-        />
-      </ScrollView>
+          <Text style={{color: '#007DDC', marginRight: 6}}>View all</Text>
+          <RightArrow />
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        contentContainerStyle={{paddingHorizontal: 20, gap: 10}}
+        data={orders}
+        renderItem={({item}) => <OrderCard item={item} />}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };
@@ -179,15 +198,15 @@ const styles = StyleSheet.create({
   backContainer: {
     height: 200,
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 18,
     position: 'relative',
   },
   cardContainer: {
     position: 'absolute',
-    bottom: -100,
+    bottom: -67,
     left: 0,
     right: 0,
-    height: 230,
+    height: 200,
     // backgroundColor: 'red',
     paddingHorizontal: 20,
     flexDirection: 'row',
@@ -196,7 +215,6 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     width: '48%',
-    height: '100%',
     borderRadius: 10,
     overflow: 'hidden',
     position: 'relative',

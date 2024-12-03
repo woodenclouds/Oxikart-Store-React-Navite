@@ -19,18 +19,13 @@ export const validateForm = (formData, validationSchema) => {
 };
 
 export const saveItem = async (key, value) => {
-  if (value) {
-    try {
-      await AsyncStorage.setItem(key, value);
-      console.log('Item saved successfully!');
-    } catch (error) {
-      console.error('Error saving item:', error);
-    }
-  } else {
-    console.error(`Cannot save ${key}: value is null or undefined.`);
+  try {
+    await AsyncStorage.setItem(key, value);
+    console.log('Item saved successfully!');
+  } catch (error) {
+    console.error('Error saving item:', error);
   }
 };
-
 
 export const getItem = async key => {
   try {
