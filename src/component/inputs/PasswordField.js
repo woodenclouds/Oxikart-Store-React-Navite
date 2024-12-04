@@ -51,7 +51,7 @@ const PasswordField = ({placeholder, onChangeText, value}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 5,
+    // marginTop: 5,
   },
   inputContainer: {
     flexDirection: 'row',

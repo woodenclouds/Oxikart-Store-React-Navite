@@ -109,20 +109,16 @@ const LoginScreen = ({navigation}) => {
               </View>
               <View style={styles.inputContainer}>
                 <InputLabel>Password</InputLabel>
-                <View>
-                  <PasswordField
-                    placeholder="Enter your password"
-                    value={loginData.password}
-                    onChangeText={e =>
-                      setLoginData(prev => ({...prev, password: e}))
-                    }
-                  />
-                  {validationErrors.password ? (
-                    <Text style={styles.error}>
-                      {validationErrors.password}
-                    </Text>
-                  ) : null}
-                </View>
+                <PasswordField
+                  placeholder="Enter your password"
+                  value={loginData.password}
+                  onChangeText={e =>
+                    setLoginData(prev => ({...prev, password: e}))
+                  }
+                />
+                {validationErrors.password ? (
+                  <Text style={styles.error}>{validationErrors.password}</Text>
+                ) : null}
               </View>
             </View>
             <View style={styles.buttonSection}>
@@ -171,6 +167,7 @@ const styles = StyleSheet.create({
     gap: 25,
   },
   inputContainer: {
+    gap: 5,
   },
   buttonSection: {
     flexDirection: 'row',
@@ -196,7 +193,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: '#D64A4A',
-    fontSize: '12px',
+    fontSize: 12,
     fontWeight: '400',
     textAlign: 'right',
   },

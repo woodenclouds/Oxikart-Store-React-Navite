@@ -17,8 +17,7 @@ const TextField = ({placeholder, onChangeText, value, secureTextEntry}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // margin: 10,
-    marginTop: 5,
+    // marginVertical: 5,
   },
   input: {
     height: 48,
