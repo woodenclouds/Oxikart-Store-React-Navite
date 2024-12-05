@@ -26,10 +26,9 @@ const MainTab = () => {
         tabBarLabelStyle: {
           color: '#141414',
           fontSize: '20px',
-          paddingVertical: '50px',
         }, // Default label color with vertical padding
         tabBarActiveTintColor: '#007DDC',
-        tabBarStyle: {paddingTop: 10, paddingBottom: 10,height: 60},
+        tabBarStyle: {paddingTop: 15, paddingBottom: 20, height: 80},
       }}>
       <Tab.Screen
         name="Home"
@@ -64,7 +63,7 @@ const MainTab = () => {
         })}
       />
       <Tab.Screen
-        name="Order"
+        name="Orders"
         component={OrderScreen}
         options={({route}) => ({
           tabBarLabelStyle: {
@@ -80,7 +79,7 @@ const MainTab = () => {
         })}
       />
       <Tab.Screen
-        name="Return"
+        name="Returns"
         component={ReturnScreen}
         options={({route}) => ({
           tabBarLabelStyle: {

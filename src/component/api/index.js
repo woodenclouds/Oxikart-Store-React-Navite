@@ -25,29 +25,27 @@ axiosInstance.interceptors.request.use(
 
 // Response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
     // Check if response is HTML, indicating a permission error
-    // if (typeof response.data === 'string' && response.data.includes('<h1>Permission Denied</h1>')) {
-    //   console.log('Permission Denied HTML response received');
-    //   Alert.alert('Permission Denied', 'You are not authorized to access this resource. Please log in again.');
-    //   return Promise.reject(new Error('Permission Denied'));
-    // }
+    if (typeof response.data === 'string' && response.data.includes('<h1>Permission Denied</h1>')) {
+      console.log('Permission Denied HTML response received');
+      Alert.alert('Permission Denied', 'You are not authorized to access this resource. Please log in again.');
+      return Promise.reject(new Error('Permission Denied'));
+    }
     
-    // const appData = response?.data?.app_data;
-    // console.log(response, "Checking response---------------------------------");
-    
-    // if (appData && appData.StatusCode === 6000) {
-    //   return appData;
-    // } else if (appData && appData.data) {
-    //   Alert.alert(appData.data.title, appData.data.message);
-    //   return Promise.reject(new Error('Non-success status code'));
-    // } else {
-    //   console.log('Unexpected response structure:', response.data);
-    //   Alert.alert('Error', 'Unexpected response structure from server.');
-    //   return Promise.reject(new Error('Unexpected response structure'));
-    // }
+    const appData = response?.data?.app_data;
 
-  // },
+    if (appData && appData.StatusCode === 6000) {
+      return appData;
+    } else if (appData && appData.data) {      
+      Alert.alert(appData.data.title, appData.data.message);
+      return Promise.reject(new Error('Non-success status code'));
+    } else {
+      console.log('Unexpected response structure:', response.data);
+      Alert.alert('Error', 'Unexpected response structure from server.');
+      return Promise.reject(new Error('Unexpected response structure'));
+    }
+  },
   error => {
     console.log(`Error API Endpoint: ${error.config?.url}`, error);
     if (error.response && error.response.status === 401) {

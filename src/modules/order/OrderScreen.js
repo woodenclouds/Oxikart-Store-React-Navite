@@ -3,6 +3,7 @@ import {
   FlatList,
   Modal,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -40,12 +41,13 @@ const OrderScreen = () => {
             ? 'accounts/store-orders-list/'
             : 'accounts/view-assigned-orders/';
         const res = await axiosInstance.get(endpoint);
-        console.log(res, 'order redd')
         active === 'Pending'
           ? setOrders(res.data.data)
           : setAssignedOrder(res.data.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
+      } finally {
+        setRefresh(false);
       }
     };
     fetchOrders();
@@ -66,7 +68,7 @@ const OrderScreen = () => {
     };
     fetchDeliveryBoys();
   }, []);
-
+  
   const handleSubmit = () => {
     axiosInstance
       .post('accounts/assign-orders/', {
@@ -85,14 +87,16 @@ const OrderScreen = () => {
         }
       })
       .catch(error => {
-        console.error('Error fetching orders:', error.response ? error.response : error);
+        console.error(
+          'Error fetching orders:',
+          error.response ? error.response : error,
+        );
       });
-      
   };
-  
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={styles.headerText}>Orders</Text>
       </View>
@@ -122,7 +126,7 @@ const OrderScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.content}>
+      <View style={styles.content}>
         <View style={styles.searchContainer}>
           <SearchIcon width={25} height={25} />
           <TextInput
@@ -153,7 +157,7 @@ const OrderScreen = () => {
             onRefresh={() => setRefresh(!refresh)}
           />
         )}
-      </ScrollView>
+      </View>
       <BottomSheetModal
         isVisible={modalVisible}
         onClose={closeModal}
@@ -201,7 +205,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#EEEEEE',
   },
-  headerText: {color: '#212121', fontSize: 16},
+  headerText: {
+    color: '#212121',
+    fontSize: 16,
+    fontWeight: '500',
+  },
   tabContainer: {flexDirection: 'row', paddingHorizontal: 20},
   tab: {
     justifyContent: 'center',

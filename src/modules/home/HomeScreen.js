@@ -36,7 +36,7 @@ const HomeScreen = () => {
       setLoading(true);
       try {
         const response = await axiosInstance.get('accounts/store-home-count/');
-        setHomeCount(response.data.app_data.data.data);
+        setHomeCount(response.data.data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -48,7 +48,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     axiosInstance.get('accounts/store-orders-list/').then(res => {
-      setOrders(res.data.app_data.data.data);
+      setOrders(res.data.data);
     });
   }, []);
   // const {data} = useGetapi('accounts/store-home-count/');
@@ -167,7 +167,7 @@ const HomeScreen = () => {
           Recent orders
         </Text>
         <TouchableOpacity
-          onPress={() => navigations.navigate('Order')}
+          onPress={() => navigations.navigate('Orders')}
           style={{
             display: 'flex',
             flexDirection: 'row',

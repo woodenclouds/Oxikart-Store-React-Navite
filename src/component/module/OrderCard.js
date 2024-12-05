@@ -5,46 +5,27 @@ import {ColorBox} from '../../assets/svg-icons';
 
 const OrderCard = ({item, openModal, setSelectedOrder}) => {
   return (
-    <View
-      style={{
-        padding: 5,
-        borderWidth: 1,
-        borderColor: '#eee',
-        borderRadius: 5,
-        marginBottom: 10,
-      }}>
+    <View style={styles.container}>
       <LinearGradient
         colors={['#f4f0ec', '#f4f0ec', '#ffffff', '#ffffff']}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        style={{
-          paddingVertical: 20,
-          paddingHorizontal: 20,
-          borderRadius: 5,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-          <ColorBox />
-          <View>
-            <Text style={{fontSize: 14, color: '#474747', fontWeight: 500}}>
-              {item?.purchase_id}
-            </Text>
-            <Text style={{color: '#474747', fontSize: 12}}>
-              {item?.delivery_address[0]?.first_name}{' '}
-              {item?.delivery_address[0]?.last_name},
-              {item?.delivery_address[0]?.address}
-            </Text>
-          </View>
+        style={styles.innerContainer}>
+        <ColorBox />
+        <View style={styles.details}>
+          <Text style={styles.purchaseId}>{item?.purchase_id}</Text>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={styles.address}>
+            {item?.delivery_address[0]?.first_name}{' '}
+            {item?.delivery_address[0]?.last_name},{' '}
+            {item?.delivery_address[0]?.address},{' '}
+            {item?.delivery_address[0]?.street}
+          </Text>
         </View>
         <TouchableOpacity
-          style={{
-            backgroundColor: '#007DDC',
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            borderRadius: 5,
-          }}
+          style={styles.btn}
           onPress={() => {
             setSelectedOrder(item);
             openModal();
@@ -58,4 +39,39 @@ const OrderCard = ({item, openModal, setSelectedOrder}) => {
 
 export default OrderCard;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  innerContainer: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  details: {
+    gap: 6,
+    width: 150,
+  },
+  purchaseId: {
+    fontSize: 14,
+    color: '#474747',
+    fontWeight: '500',
+  },
+  address: {
+    color: '#474747', 
+    fontSize: 12
+  },
+  btn: {
+    backgroundColor: '#007DDC',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+});
