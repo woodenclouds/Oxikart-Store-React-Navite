@@ -2,10 +2,10 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -21,15 +21,23 @@ import {
 } from '../../assets/svg-icons';
 import HomeCard from '../../component/module/HomeCard';
 import OrderCard from '../../component/module/OrderCard';
-import useGetapi from '../../hooks/useGetapi';
 import axiosInstance from '../../component/api';
 import {useNavigation} from '@react-navigation/native';
 import Loading from '../../component/Loading';
+import BottomSheetModal from '../../utils/components/BottomSheetModal';
+import Dropdown from '../../utils/components/Dropdown';
+import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
 
 const HomeScreen = () => {
+  const navigations = useNavigation();
   const [homeCount, setHomeCount] = useState({});
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
+  const [deliveryBoys, setDeliveryBoys] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,15 +59,48 @@ const HomeScreen = () => {
       setOrders(res.data.data);
     });
   }, []);
-  // const {data} = useGetapi('accounts/store-home-count/');
 
-  const navigations = useNavigation();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchDeliveryBoys();
+        setDeliveryBoys(
+          res.data.map(item => ({label: item.full_name, value: item.id})),
+        );
+      } catch (error) {
+        console.error('Error fetching delivery boys:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   if (loading) {
     return <Loading />;
   }
 
-  
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
+
+  const handleSubmit = async () => {
+    try {
+      const res = await assignOrder(
+        selectedOrder?.purchase_id,
+        selectedDeliveryBoy.value,
+      );
+      if (res && res.data) {
+        if (res.StatusCode === 6000) {
+          setModalVisible(false);
+        } else {
+          console.log('Unexpected StatusCode:', res.StatusCode);
+        }
+      } else {
+        console.log('Response data is missing:', res);
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#007DDC" barStyle="light-content" />
@@ -83,7 +124,9 @@ const HomeScreen = () => {
                 paddingVertical: 30,
                 paddingHorizontal: 20,
               }}>
-              <Text style={{fontSize: 28, color: '#000'}}>{homeCount.purchase_count}</Text>
+              <Text style={{fontSize: 28, color: '#000'}}>
+                {homeCount.purchase_count}
+              </Text>
               <Text style={{color: '#565656', fontSize: 14}}>Total orders</Text>
             </View>
             <View
@@ -117,7 +160,9 @@ const HomeScreen = () => {
                 paddingVertical: 30,
                 paddingHorizontal: 20,
               }}>
-              <Text style={{fontSize: 28, color: '#000'}}>{homeCount.pending_count}</Text>
+              <Text style={{fontSize: 28, color: '#000'}}>
+                {homeCount.pending_count}
+              </Text>
               <Text style={{color: '#565656', fontSize: 14}}>
                 Pending orders
               </Text>
@@ -182,9 +227,48 @@ const HomeScreen = () => {
       <FlatList
         contentContainerStyle={{paddingHorizontal: 20, gap: 10}}
         data={orders}
-        renderItem={({item}) => <OrderCard item={item} />}
+        renderItem={({item}) => (
+          <OrderCard
+            item={item}
+            openModal={openModal}
+            setSelectedOrder={setSelectedOrder}
+          />
+        )}
         keyExtractor={item => item.id}
       />
+      <BottomSheetModal
+        isVisible={modalVisible}
+        onClose={closeModal}
+        title="Confirm & assign">
+        <View style={styles.modalContainer}>
+          <View>
+            <Text style={styles.modalLabel}>Order ID*</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={selectedOrder?.purchase_id}
+              editable={false}
+              placeholder="Enter Order ID"
+            />
+          </View>
+          <View style={styles.dropdownContainer}>
+            <Text style={styles.modalLabel}>Delivery boy*</Text>
+            <Dropdown
+              placeholder="Select delivery boy"
+              options={deliveryBoys}
+              onValueChange={setSelectedDeliveryBoy}
+              selectedValue={selectedDeliveryBoy}
+            />
+          </View>
+        </View>
+        <View style={styles.bottomContainer}>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={handleSubmit}
+            accessibilityLabel="Confirm Order Assignment">
+            <Text style={styles.confirmButtonText}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheetModal>
     </View>
   );
 };
@@ -208,7 +292,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 200,
-    // backgroundColor: 'red',
     paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -231,5 +314,37 @@ const styles = StyleSheet.create({
     width: '60%',
     top: 0,
     right: 0,
+  },
+  modalContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    paddingBottom: 40,
+  },
+  modalLabel: {
+    marginBottom: 5,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 5,
+  },
+  dropdownContainer: {
+    marginTop: 10,
+  },
+  bottomContainer: {
+    paddingHorizontal: 25,
+    paddingVertical: 30,
+  },
+  confirmButton: {
+    backgroundColor: '#007DDC',
+    paddingVertical: 10,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  confirmButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });

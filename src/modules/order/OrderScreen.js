@@ -1,8 +1,5 @@
 import {
-  Button,
   FlatList,
-  Modal,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -17,6 +14,7 @@ import AssignedCard from '../../component/module/AssignedCard';
 import axiosInstance from '../../component/api';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
+import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
 
 const OrderScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -54,11 +52,9 @@ const OrderScreen = () => {
   }, [refresh, active]);
 
   useEffect(() => {
-    const fetchDeliveryBoys = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axiosInstance.get(
-          'accounts/store-admin-list-delivery-boys/',
-        );
+        const res = await fetchDeliveryBoys();
         setDeliveryBoys(
           res.data.map(item => ({label: item.full_name, value: item.id})),
         );
@@ -66,32 +62,23 @@ const OrderScreen = () => {
         console.error('Error fetching delivery boys:', error);
       }
     };
-    fetchDeliveryBoys();
+    fetchData();
   }, []);
-  
-  const handleSubmit = () => {
-    axiosInstance
-      .post('accounts/assign-orders/', {
-        purchase_id: selectedOrder?.purchase_id,
-        delivery_boy: selectedDeliveryBoy.value,
-      })
-      .then(res => {
-        if (res && res.data) {
-          if (res.StatusCode === 6000) {
-            setModalVisible(false);
-          } else {
-            console.log('Unexpected StatusCode:', res.StatusCode);
-          }
-        } else {
-          console.log('Response data is missing:', res);
-        }
-      })
-      .catch(error => {
-        console.error(
-          'Error fetching orders:',
-          error.response ? error.response : error,
-        );
-      });
+
+  const handleSubmit = async () => {
+    try {
+      const res = await assignOrder(
+        selectedOrder?.purchase_id,
+        selectedDeliveryBoy.value,
+      );
+      if (res.StatusCode === 6000) {
+        setModalVisible(false);
+      } else {
+        console.log('Unexpected StatusCode:', res.StatusCode);
+      }
+    } catch (error) {
+      console.error('Error assigning order:', error);
+    }
   };
 
   return (
