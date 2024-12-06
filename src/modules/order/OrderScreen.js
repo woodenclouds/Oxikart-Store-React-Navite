@@ -77,10 +77,10 @@ const OrderScreen = () => {
       })
       .then(res => {
         if (res && res.data) {
-          if (res.data.StatusCode === 6000) {
+          if (res.StatusCode === 6000) {
             setModalVisible(false);
           } else {
-            console.log('Unexpected StatusCode:', res.data.StatusCode);
+            console.log('Unexpected StatusCode:', res.StatusCode);
           }
         } else {
           console.log('Response data is missing:', res);

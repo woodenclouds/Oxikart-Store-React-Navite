@@ -59,6 +59,7 @@ const HomeScreen = () => {
     return <Loading />;
   }
 
+  
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#007DDC" barStyle="light-content" />
@@ -82,7 +83,7 @@ const HomeScreen = () => {
                 paddingVertical: 30,
                 paddingHorizontal: 20,
               }}>
-              <Text style={{fontSize: 28, color: '#000'}}>4,340</Text>
+              <Text style={{fontSize: 28, color: '#000'}}>{homeCount.purchase_count}</Text>
               <Text style={{color: '#565656', fontSize: 14}}>Total orders</Text>
             </View>
             <View
@@ -116,7 +117,7 @@ const HomeScreen = () => {
                 paddingVertical: 30,
                 paddingHorizontal: 20,
               }}>
-              <Text style={{fontSize: 28, color: '#000'}}>4,340</Text>
+              <Text style={{fontSize: 28, color: '#000'}}>{homeCount.pending_count}</Text>
               <Text style={{color: '#565656', fontSize: 14}}>
                 Pending orders
               </Text>
