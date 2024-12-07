@@ -23,22 +23,10 @@ const BoyCard = ({item}) => {
   };
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-        <Image source={BoyImage} style={styles.imageStyle} />
-        <View>
-          <Text style={{color: '#474747', fontSize: 16, fontWeight: 500}}>
-            {item?.full_name}
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: 400,
-              color: '#474747',
-              marginTop: 8,
-            }}>
-            ID : {item.delivery_boy_id}
-          </Text>
-        </View>
+      <Image source={BoyImage} style={styles.imageStyle} />
+      <View style={styles.nameContainer}>
+        <Text style={styles.name}>{item?.full_name}</Text>
+        <Text style={styles.deliveryBoyId}>ID : {item.delivery_boy_id}</Text>
       </View>
       <TouchableOpacity style={styles.optionCont} onPress={handleOpenTooltip}>
         <View style={{flexDirection: 'row', gap: 2}}>
@@ -99,14 +87,29 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderColor: '#EEEEEE',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    borderRadius: 8,
+    padding: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'relative',
     marginBottom: 10,
     zIndex: 1,
+  },
+  nameContainer: {
+    flex: 1,
+    marginLeft: 15,
+    justifyContent: 'center',
+    gap: 5,
+  },
+  name: {
+    color: '#474747',
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  deliveryBoyId: {
+    color: '#474747',
+    fontWeight: '400',
+    fontSize: 12,
   },
   optionCont: {
     backgroundColor: '#F4F8FA',

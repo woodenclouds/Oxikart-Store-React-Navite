@@ -1,12 +1,10 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 import BoyCard from './BoyCard';
 import AddProfile from '../../assets/svg-icons/AddProfile';
 import Modal from '../../component/Modal';
 import {useNavigation} from '@react-navigation/native';
-import useGetapi from '../../hooks/useGetapi';
-import axiosInstance from '../../component/api';
+import {fetchDeliveryBoys} from '../../services/orderService';
 
 const DeliveryBoyScreen = () => {
   const [showModal, setShowModal] = useState(false);
@@ -21,16 +19,24 @@ const DeliveryBoyScreen = () => {
     setShowModal(false);
   };
   const navigation = useNavigation();
-  // const {data} = useGetapi('accounts/store-admin-list-delivery-boys/');
+
   useEffect(() => {
-    axiosInstance.get('accounts/store-admin-list-delivery-boys/').then(res => {
-      console.log(res.data, '______data');
-      setDeliveryBoys(res.data)
-    });
+    const fetchData = async () => {
+      try {
+        const res = await fetchDeliveryBoys();
+        setDeliveryBoys(res.data);
+      } catch (error) {
+        console.error('Error fetching delivery boys:', error);
+      } finally {
+        setRefresh(false);
+      }
+    };
+    fetchData();
   }, [refresh]);
-  // console.log(data, '----');
+
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#FFFFFF" barStyle='dark-content'/>
       <View style={styles.header}>
         <Text style={styles.headerText}>Delivery Boys</Text>
         <TouchableOpacity
@@ -49,10 +55,9 @@ const DeliveryBoyScreen = () => {
           style={{paddingVertical: 20}}
           contentContainerStyle={{paddingBottom: 50}}
           onRefresh={() => {
-            // Your refresh function here
             setRefresh(!refresh);
           }}
-          refreshing={false}
+          refreshing={refresh}
         />
       </View>
       <Modal
@@ -106,7 +111,7 @@ export default DeliveryBoyScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     paddingHorizontal: 20,
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 16,
-    // fontWeight: 500,
+    fontWeight: '500',
     color: '#212121',
   },
 });
