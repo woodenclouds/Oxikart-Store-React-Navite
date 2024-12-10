@@ -37,13 +37,13 @@ const LoginScreen = ({navigation}) => {
           password: loginData.password,
         },
       );
+      console.log('user id', response?.data?.app_data.data.pk);
 
       if (response.data.app_data.StatusCode === 6000) {
         saveItem('token', response?.data?.app_data.data.access_token);
         saveItem('role', response?.data?.app_data.data.roles[0]);
-        if (response.data.pk) {
-          saveItem('user_id', response?.data?.app_data.data.pk);
-        }
+        saveItem('user_id', response?.data?.app_data.data.pk);
+
         dispatch(
           setUserInfo({
             isVerified: true,

@@ -9,7 +9,7 @@ export default InputLabel;
 
 const styles = StyleSheet.create({
   text: {
-    color: '#747474',
+    color: '#676767',
     fontSize: 14,
     fontWeight: '400',
   },

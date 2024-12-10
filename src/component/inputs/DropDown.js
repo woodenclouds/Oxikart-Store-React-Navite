@@ -3,10 +3,9 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-const Dropdown = ({label, items, onValueChange, placeholder}) => {
+const Dropdown = ({items, onValueChange, placeholder}) => {
   return (
     <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
       <RNPickerSelect
         onValueChange={onValueChange}
         items={items}
@@ -24,14 +23,13 @@ const Dropdown = ({label, items, onValueChange, placeholder}) => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-  },
-  label: {
-    marginBottom: 5,
-    fontSize: 16,
-    color: '#000',
+    borderWidth: 1,
+    borderColor: '#A2A2A2',
+    borderRadius: 5,
   },
   inputIOS: {
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: '400',
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
@@ -41,7 +39,8 @@ const styles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: '400',
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderWidth: 1,
@@ -52,6 +51,8 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     color: '#999',
+    fontSize: 14,
+    fontWeight: '400',
   },
 });
 

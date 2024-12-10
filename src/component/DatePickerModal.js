@@ -24,6 +24,7 @@ const DatePickerModal = ({visible, date, onClose, onDateChange}) => {
             mode="date"
             display="default"
             onChange={handleDateChange}
+            maximumDate={new Date()}
           />
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={onClose}>

@@ -6408,10 +6408,10 @@ react-native-tooltip-menu@^3.0.7:
   resolved "https://registry.npmjs.org/react-native-tooltip-menu/-/react-native-tooltip-menu-3.0.7.tgz"
   integrity sha512-d6+MlilDXfygwyMY3LvDPp9J6tLIIgwTwrzyz7g5zez70J4/EfaqYFZJXlxyfH6EQdQrnIz2YhS7jj8BmzsYBA==
 
-react-native-vector-icons@^10.1.0, react-native-vector-icons@>7.0.0:
-  version "10.1.0"
-  resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.1.0.tgz"
-  integrity sha512-fdQjCHIdoXmRoTZ5gvN1FmT4sGLQ2wmQiNZHKJQUYnE2tkIwjGnxNch+6Nd4lHAACvMWO7LOzBNot2u/zlOmkw==
+react-native-vector-icons@^10.2.0, react-native-vector-icons@>7.0.0:
+  version "10.2.0"
+  resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.2.0.tgz"
+  integrity sha512-n5HGcxUuVaTf9QJPs/W22xQpC2Z9u0nb0KgLPnVltP8vdUvOp6+R26gF55kilP/fV4eL4vsAHUqUjewppJMBOQ==
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"

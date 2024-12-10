@@ -1,4 +1,11 @@
-import {FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import BoyCard from './BoyCard';
 import AddProfile from '../../assets/svg-icons/AddProfile';
@@ -36,16 +43,14 @@ const DeliveryBoyScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle='dark-content'/>
+      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={styles.headerText}>Delivery Boys</Text>
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('AddDelivery');
-          }}
-          style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
+          onPress={() => navigation.navigate('AddDelivery')}
+          style={styles.addDelivery}>
           <AddProfile />
-          <Text style={{fontSize: 14, color: '#141414'}}>Add delivery boy</Text>
+          <Text style={styles.addText}>Add delivery boy</Text>
         </TouchableOpacity>
       </View>
       <View style={{paddingHorizontal: 20}}>
@@ -53,7 +58,7 @@ const DeliveryBoyScreen = () => {
           data={deliveryBoys}
           renderItem={({item}) => <BoyCard key={item.id} item={item} />}
           style={{paddingVertical: 20}}
-          contentContainerStyle={{paddingBottom: 50}}
+          contentContainerStyle={{paddingBottom: 100}}
           onRefresh={() => {
             setRefresh(!refresh);
           }}
@@ -125,5 +130,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: '#212121',
+  },
+  addDelivery: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  addText: {
+    fontSize: 14,
+    color: '#141414',
   },
 });

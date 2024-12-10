@@ -14,7 +14,6 @@ import {useNavigation} from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ImageUploadComponent from '../../../component/ImageUploadComponent';
-import ProfileIcon from '../../../assets/svg-icons/ProfileIcon';
 import CameraIcon from '../../../assets/svg-icons/CameraIcon';
 import {InputLabel} from '../../../component/inputs';
 import AddressInput from '../../../component/AddressInput';
@@ -28,6 +27,7 @@ import RNFS from 'react-native-fs';
 import useGetapi from '../../../hooks/useGetapi';
 import Dropdown from '../../../component/inputs/DropDown';
 import SuccessModal from '../../../component/SuccessModal';
+import {UserIcon} from '../../../assets/svg-icons';
 
 const Adddelivery = () => {
   const navigate = useNavigation();
@@ -37,7 +37,7 @@ const Adddelivery = () => {
     full_name: '',
     phone: '',
     gender: '',
-    // image: '',
+    image: '',
     age: '',
     dob: new Date(),
     state: '',
@@ -47,15 +47,16 @@ const Adddelivery = () => {
     password: '',
   });
   const {data} = useGetapi('general/list-country/');
+
   const [country, setCountry] = useState([]);
   const [state, setState] = useState([]);
-  // console.log(data.data, '___');
+
   useEffect(() => {
     if (data?.data) {
       setCountry(data?.data?.map(item => ({label: item.name, value: item.id})));
     }
   }, [data]);
-  console.log(country);
+
   const [openDOB, setOpenDOB] = useState(false);
   const [openJoiningDate, setOpenJoiningDate] = useState(false);
 
@@ -88,7 +89,7 @@ const Adddelivery = () => {
           name: response.assets[0].fileName,
         };
         const binaryData = await RNFS.readFile(imageFile.uri, 'base64');
-        // setFormData(prev => ({...prev, image: binaryData}));
+        setFormData(prev => ({...prev, image: binaryData}));
         setImage(source);
       }
     });
@@ -107,7 +108,6 @@ const Adddelivery = () => {
         .post('accounts/create-delivery-boy/', formData)
         .then(res => {
           console.log(formData.image, '___image');
-          // console.log(res.StatusCode === 6000);
           if (res.StatusCode === 6000) {
             handleButtonClick();
           }
@@ -140,313 +140,191 @@ const Adddelivery = () => {
         <TouchableOpacity onPress={() => navigate.goBack()}>
           <BackIcon />
         </TouchableOpacity>
-        <Text style={{fontSize: 16, color: '#272727'}}>Add delivery boy</Text>
+        <Text style={styles.headerText}>Add delivery boy</Text>
       </View>
       <ScrollView>
-        <View
-          style={{
-            paddingVertical: 30,
-            borderBottomWidth: 1,
-            borderBottomColor: '#eee',
-          }}>
-          <View style={{alignItems: 'center', position: 'relative'}}>
-            <View style={styles.circle}>
-              <View style={styles.inCircle}>
-                {image ? (
-                  <Image
-                    source={image}
-                    style={{width: 98, height: 98, borderRadius: 50}}
-                  />
-                ) : (
-                  <ProfileIcon width={25} height={25} />
-                )}
-              </View>
-              <TouchableOpacity
-                onPress={() => ImagePicker()}
-                style={{
-                  padding: 5,
-                  borderRadius: 50,
-                  borderWidth: 3,
-                  borderColor: '#fff',
-                  position: 'absolute',
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: '#007DDC',
-                }}>
-                <CameraIcon />
-              </TouchableOpacity>
+        <View style={styles.imageContainer}>
+          <View style={styles.circle}>
+            <View style={styles.inCircle}>
+              {image ? (
+                <Image source={image} style={styles.image} />
+              ) : (
+                <UserIcon />
+              )}
             </View>
+            <TouchableOpacity
+              onPress={() => ImagePicker()}
+              style={styles.imagePicker}>
+              <CameraIcon />
+            </TouchableOpacity>
           </View>
         </View>
-        <View
-          style={{
-            paddingHorizontal: 20,
-            paddingVertical: 20,
-            borderBottomWidth: 1,
-            borderColor: '#EFEFEF',
-          }}>
-          <View style={{marginTop: 25}}>
+        <View style={styles.form}>
+          <View>
             <InputLabel>Full name</InputLabel>
             <TextInput
               placeholder="Enter full name"
               onChangeText={text => handleInputChange('full_name', text)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                color: '#000',
-              }}
+              style={styles.input}
+              placeholderTextColor="#C3C3C3"
             />
             {errors.full_name && (
               <Text style={styles.error}>{errors.full_name}</Text>
             )}
           </View>
-          <View style={{marginTop: 25}}>
+          <View>
             <InputLabel>Phone number</InputLabel>
             <TextInput
               placeholder="Enter mobile number"
               onChangeText={text => handleInputChange('phone', text)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                color: '#000',
-              }}
+              style={styles.input}
+              placeholderTextColor="#C3C3C3"
             />
             {errors.phone && <Text style={styles.error}>{errors.phone}</Text>}
           </View>
-          <View style={{marginTop: 25}}>
+          <View>
             <InputLabel>Gender</InputLabel>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 10,
-              }}>
+            <View style={styles.genderContainer}>
               <TouchableOpacity
                 onPress={() => handleInputChange('gender', 'male')}
-                style={{
-                  width: '30%',
-                  borderWidth: 1,
-                  borderColor:
-                    formData.gender === 'male' ? '#007DDC' : '#C6C6C6',
-                  height: 35,
-                  borderRadius: 5,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: 5,
-                  padding: 2,
-                }}>
+                style={[
+                  styles.gender,
+                  {
+                    borderColor:
+                      formData.gender === 'male' ? '#007DDC' : '#C6C6C6',
+                  },
+                ]}>
                 <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 10,
-                    backgroundColor:
-                      formData.gender === 'male' ? '#007DDC' : '#fff',
-                    borderWidth: 1,
-                    borderColor: '#C6C6C6',
-                  }}
+                  style={[
+                    styles.genderDot,
+                    {
+                      backgroundColor:
+                        formData.gender === 'male' ? '#007DDC' : '#fff',
+                    },
+                  ]}
                 />
-                <Text style={{color: '#000'}}>Male</Text>
+                <Text style={styles.genderLabel}>Male</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleInputChange('gender', 'female')}
-                style={{
-                  width: '30%',
-                  borderWidth: 1,
-                  borderColor:
-                    formData.gender === 'female' ? '#007DDC' : '#C6C6C6',
-                  height: 35,
-                  borderRadius: 5,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: 5,
-                }}>
+                style={[
+                  styles.gender,
+                  {
+                    borderColor:
+                      formData.gender === 'female' ? '#007DDC' : '#C6C6C6',
+                  },
+                ]}>
                 <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 10,
-                    backgroundColor:
-                      formData.gender === 'female' ? '#007DDC' : '#fff',
-                    borderWidth: 1,
-                    borderColor: '#C6C6C6',
-                  }}
+                  style={[
+                    styles.genderDot,
+                    {
+                      backgroundColor:
+                        formData.gender === 'female' ? '#007DDC' : '#fff',
+                    },
+                  ]}
                 />
-                <Text style={{color: '#000'}}>Female</Text>
+                <Text style={styles.genderLabel}>Female</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleInputChange('gender', 'other')}
-                style={{
-                  width: '30%',
-                  borderWidth: 1,
-                  borderColor:
-                    formData.gender === 'other' ? '#007DDC' : '#C6C6C6',
-                  height: 35,
-                  borderRadius: 5,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: 5,
-                }}>
+                style={[
+                  styles.gender,
+                  {
+                    borderColor:
+                      formData.gender === 'other' ? '#007DDC' : '#C6C6C6',
+                  },
+                ]}>
                 <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 10,
-                    backgroundColor:
-                      formData.gender === 'other' ? '#007DDC' : '#fff',
-                    borderWidth: 1,
-                    borderColor: '#C6C6C6',
-                  }}
+                  style={[
+                    styles.genderDot,
+                    {
+                      backgroundColor:
+                        formData.gender === 'other' ? '#007DDC' : '#fff',
+                    },
+                  ]}
                 />
-                <Text style={{color: '#000'}}>Other</Text>
+                <Text style={styles.genderLabel}>Other</Text>
               </TouchableOpacity>
             </View>
             {errors.gender && <Text style={styles.error}>{errors.gender}</Text>}
           </View>
-          <View style={{marginTop: 25}}>
+          <View>
             <InputLabel>Age</InputLabel>
             <TextInput
               placeholder="Enter age"
               keyboardType="number-pad"
               onChangeText={text => handleInputChange('age', text)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                color: '#000',
-              }}
+              style={styles.input}
+              placeholderTextColor="#C3C3C3"
             />
             {errors.age && <Text style={styles.error}>{errors.age}</Text>}
           </View>
-          <View style={{marginTop: 25}}>
+          <View>
             <InputLabel>Date of birth</InputLabel>
             <TouchableOpacity
               onPress={() => setOpenDOB(true)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                justifyContent: 'center',
-              }}>
+              style={styles.input}>
               <Text style={{color: '#000'}}>
                 {formData.dob.toLocaleDateString()}
               </Text>
             </TouchableOpacity>
             {errors.dob && <Text style={styles.error}>{errors.dob}</Text>}
           </View>
-          <View style={{marginTop: 25}}>
-            {/* <InputLabel>Country</InputLabel> */}
-            {/* <TextInput
-              placeholder="Enter country"
-              onChangeText={text => handleInputChange('country', text)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                color: '#000',
-              }}
-            /> */}
+          <View>
+            <InputLabel>State</InputLabel>
             <Dropdown
-              label="Country"
+              items={state}
+              onValueChange={value =>
+                setFormData(prev => ({...prev, state: value}))
+              }
+              placeholder={{label: 'Select state', value: null}}
+            />
+            {errors.state && <Text style={styles.error}>{errors.state}</Text>}
+          </View>
+          <View>
+            <InputLabel>Country</InputLabel>
+            <Dropdown
               items={country}
               onValueChange={value =>
                 setFormData(prev => ({...prev, country: value}))
               }
-              placeholder={{label: 'Select an option...', value: null}}
+              placeholder={{label: 'Select country', value: null}}
             />
             {errors.country && (
               <Text style={styles.error}>{errors.country}</Text>
             )}
           </View>
-          <View style={{marginTop: 25}}>
-            <InputLabel>State</InputLabel>
-            {/* <TextInput
-              placeholder="Enter state"
-              onChangeText={text => handleInputChange('state', text)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                color: '#000',
-              }}
-            /> */}
-            <Dropdown
-              label="State"
-              items={state}
-              onValueChange={value =>
-                setFormData(prev => ({...prev, state: value}))
-              }
-              placeholder={{label: 'Select an option...', value: null}}
-            />
-            {errors.state && <Text style={styles.error}>{errors.state}</Text>}
-          </View>
-          <View style={{marginTop: 25}}>
+          <View>
             <InputLabel>Joining date</InputLabel>
             <TouchableOpacity
               onPress={() => setOpenJoiningDate(true)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                justifyContent: 'center',
-                color: '#000',
-              }}>
-              <Text>{formData.joining.toLocaleDateString()}</Text>
+              style={styles.input}>
+              <Text style={{color: '#000'}}>
+                {formData.joining.toLocaleDateString()}
+              </Text>
             </TouchableOpacity>
             {errors.joining && (
               <Text style={styles.error}>{errors.joining}</Text>
             )}
           </View>
-          <View style={{marginTop: 25}}>
+          <View>
             <InputLabel>Address</InputLabel>
             <AddressInput
               address={formData.address}
               onChangeText={text => handleInputChange('address', text)}
+              placeholder="Enter address"
             />
             {errors.address && (
               <Text style={styles.error}>{errors.address}</Text>
             )}
           </View>
-          <View style={{marginTop: 25}}>
+          <View>
             <InputLabel>Password</InputLabel>
             <TextInput
               placeholder="Enter mobile number"
+              placeholderTextColor="#C3C3C3"
               onChangeText={text => handleInputChange('password', text)}
-              style={{
-                height: 40,
-                borderWidth: 1,
-                borderColor: '#A2A2A2',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                marginTop: 5,
-                color: '#000',
-              }}
+              style={styles.input}
             />
             {errors.password && (
               <Text style={styles.error}>{errors.password}</Text>
@@ -454,20 +332,12 @@ const Adddelivery = () => {
           </View>
         </View>
       </ScrollView>
-      <View
-        style={{
-          paddingHorizontal: 15,
-          paddingVertical: 10,
-          backgroundColor: '#FAFAFA',
-          borderTopWidth: 1,
-          borderTopColor: '#EFEFEF',
-        }}>
-        <TouchableOpacity
-          style={{backgroundColor: '#007DDC', padding: 10, borderRadius: 5}}
-          onPress={handleSubmit}>
-          <Text style={{color: 'white', textAlign: 'center'}}>Submit</Text>
+      <View style={styles.btnContainer}>
+        <TouchableOpacity style={styles.saveBtn} onPress={handleSubmit}>
+          <Text style={styles.btnText}>Save</Text>
         </TouchableOpacity>
       </View>
+
       {openDOB && (
         <DatePickerModal
           visible={openDOB}
@@ -505,21 +375,31 @@ export default Adddelivery;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     paddingHorizontal: 20,
-    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
-    borderBottomWidth: 1,
     gap: 5,
-    borderBottomColor: '#EFEFEF',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+  },
+  headerText: {
+    fontSize: 16,
+    color: '#272727',
+  },
+  imageContainer: {
+    paddingVertical: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+    alignItems: 'center',
+    position: 'relative',
   },
   circle: {
-    width: 108,
-    height: 108,
+    width: 88,
+    height: 88,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
@@ -528,13 +408,92 @@ const styles = StyleSheet.create({
     padding: 3,
   },
   inCircle: {
-    width: 100,
-    height: 100,
+    width: 85,
+    height: 85,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
     backgroundColor: '#F3F6F8',
+  },
+  image: {
+    width: 98,
+    height: 98,
+    borderRadius: 50,
+    resizeMode: 'center',
+  },
+  imagePicker: {
+    padding: 5,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: '#fff',
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#007DDC',
+  },
+  form: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderColor: '#EFEFEF',
+    gap: 16,
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#A2A2A2',
+    borderRadius: 5,
+    paddingHorizontal: 16,
+    marginTop: 8,
+    color: '#000',
+    fontSize: 14,
+    fontWeight: '400',
+    justifyContent: 'center',
+  },
+  genderDot: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#C6C6C6',
+  },
+  genderLabel: {
+    color: '#747474',
+    fontWeight: '500',
+    fontSize: 14,
+  },
+  genderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  gender: {
+    width: '30%',
+    borderWidth: 1,
+    height: 48,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+    padding: 2,
+  },
+  btnContainer: {
+    paddingHorizontal: 15,
+    paddingVertical: 16,
+    backgroundColor: '#FAFAFA',
+    borderTopWidth: 1,
+    borderTopColor: '#EFEFEF',
+  },
+  saveBtn: {
+    backgroundColor: '#007DDC',
+    padding: 10,
+    borderRadius: 5,
+  },
+  btnText: {
+    color: 'white',
+    textAlign: 'center',
   },
   error: {
     color: 'red',

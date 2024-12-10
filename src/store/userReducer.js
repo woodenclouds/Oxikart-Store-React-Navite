@@ -3,7 +3,7 @@ const initialState = {
   token: null,
   username: '',
   role: '',
-  user_id: '',
+  user_id: null,
 };
 
 function userReducer(state = initialState, action) {

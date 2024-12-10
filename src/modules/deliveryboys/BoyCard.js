@@ -5,6 +5,8 @@ import {BoyImage} from '../../assets/images';
 import Tooltip from '../../component/Tooltip';
 import {icons} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Entypo';
+
 
 const BoyCard = ({item}) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -29,32 +31,7 @@ const BoyCard = ({item}) => {
         <Text style={styles.deliveryBoyId}>ID : {item.delivery_boy_id}</Text>
       </View>
       <TouchableOpacity style={styles.optionCont} onPress={handleOpenTooltip}>
-        <View style={{flexDirection: 'row', gap: 2}}>
-          <View
-            style={{
-              width: 4,
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: '#007DDC',
-            }}
-          />
-          <View
-            style={{
-              width: 4,
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: '#007DDC',
-            }}
-          />
-          <View
-            style={{
-              width: 4,
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: '#007DDC',
-            }}
-          />
-        </View>
+        <Icon name="dots-three-horizontal" size={18} color="#007DDC" />
       </TouchableOpacity>
       {tooltipVisible && (
         <View style={styles.tooltipContainer}>
@@ -64,11 +41,11 @@ const BoyCard = ({item}) => {
               navigation.navigate('Edit deliveryboy', {id: item.id})
             }>
             <Image source={icons.edit} />
-            <Text>Edit</Text>
+            <Text style={styles.tooltipText}>Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.toolButton}>
             <Image source={icons.delete} />
-            <Text>Remove</Text>
+            <Text style={styles.tooltipText}>Remove</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -94,6 +71,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 10,
     zIndex: 1,
+    height: 80,
   },
   nameContainer: {
     flex: 1,
@@ -115,36 +93,43 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F8FA',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 30,
-    height: 20,
-    borderRadius: 5,
-  },
-  toolTip: {
-    width: 200,
-    height: 200,
-    borderWidth: 2,
-    borderColor: '#F8F8F8',
+    height: 30,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 2,
     position: 'absolute',
-    left: 0,
+    top: 8,
+    right: 8,
+    zIndex: 1000,
   },
   tooltipContainer: {
     position: 'absolute',
-    width: 120,
-    // height: 100,
-    backgroundColor: '#FFF',
-    right: 0,
-    top: 30,
-    borderRadius: 10,
+    width: 152,
+    backgroundColor: '#FFFFFF',
+    right: 8,
+    top: 43,
+    padding: 12,
+    gap: 20,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#F8F8F8',
-    zIndex: 1000,
+    zIndex: 999,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
   },
   toolButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
     flexDirection: 'row',
-    gap: 5,
+    gap: 10,
   },
+  tooltipText: {
+    color: '#212121',
+    fontSize: 14,
+    fontWeight: '500',
+  }
 });

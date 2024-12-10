@@ -9,6 +9,7 @@ const AddressInput = ({value, onChangeText, placeholder}) => {
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
+        placeholderTextColor="#C3C3C3"
         multiline={true} // Updated to enable multiple line input
         // numberOfLines = {4}
       />
@@ -18,12 +19,11 @@ const AddressInput = ({value, onChangeText, placeholder}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
-    marginTop: 10,
+    marginTop: 8,
     borderColor: '#A2A2A2',
     borderWidth: 1,
     borderRadius: 5,
-    height: 80
+    height: 90
   },
   input: {
     paddingHorizontal: 16,

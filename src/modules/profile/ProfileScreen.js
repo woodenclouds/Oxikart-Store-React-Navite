@@ -20,17 +20,16 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
+
   const {user_id} = useSelector(state => state.user);
 
   const handleLogout = async () => {
-    // Handle logout logic here
-    // await saveItem('token', '');
-    // await saveItem('role', '');
     AsyncStorage.clear()
       .then(() => console.log('AsyncStorage cleared'))
       .catch(e => console.log('AsyncStorage error: ', e));
     dispatch(setUserInfo({isVerified: false, token: '', role: ''}));
   };
+
   useEffect(() => {
     axiosInstance
       .get(`accounts/single-view-store-admin/${user_id}/`)
@@ -38,15 +37,22 @@ const ProfileScreen = () => {
         setUserData(res.data.data);
       });
   }, [user_id]);
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.title}>Profile</Text>
+        <View style={styles.header}>
+          <Text style={styles.title}>Profile</Text>
+        </View>
         <View style={styles.profileContainer}>
           <Avatar
             rounded
             size="large"
-            source={{uri: 'https://via.placeholder.com/150'}} // Replace with the actual image URL
+            source={{
+              uri: userData.logo
+                ? userData.logo
+                : 'https://via.placeholder.com/150',
+            }} // Replace with the actual image URL
             containerStyle={styles.avatar}
           />
           <View>
@@ -64,7 +70,12 @@ const ProfileScreen = () => {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>Address :</Text>
-          <Text style={styles.infoText}>{userData?.address_1}</Text>
+          <Text style={styles.infoText}>
+            {userData?.address_1}, {userData?.address_2}
+            {'\n'}
+            {userData?.city}, {userData?.state}, {userData?.country} {'\n'}
+            {userData?.pincode}
+          </Text>
         </View>
       </ScrollView>
       <TouchableOpacity
@@ -79,47 +90,56 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
-    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    padding: 20,
+    // justifyContent: 'space-between',
   },
   contentContainer: {
     paddingBottom: 16,
   },
+  header: {
+    
+  },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#212121',
   },
   profileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
     backgroundColor: '#FAFAFA',
-    paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+    borderRadius: 8,
+    gap: 30,
   },
   avatar: {
-    marginRight: 16,
+    // marginRight: 16,
   },
   shopName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '500',
+    color: '#474747',
   },
   shopId: {
-    fontSize: 14,
-    color: 'gray',
+    fontSize: 12,
+    color: '#474747',
+    fontWeight: '400',
   },
   infoContainer: {
     marginBottom: 20,
   },
   infoTitle: {
-    fontSize: 16,
-    color: 'gray',
+    fontSize: 14,
+    color: '#676767',
+    fontWeight: '400',
     marginBottom: 4,
   },
   infoText: {
     fontSize: 16,
+    color: '#474747',
+    fontWeight: '500',
   },
   logoutButton: {
     // backgroundColor: '#FF6347',
