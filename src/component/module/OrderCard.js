@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {ColorBox} from '../../assets/svg-icons';
 
 const OrderCard = ({item, openModal, setSelectedOrder}) => {
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -13,16 +14,21 @@ const OrderCard = ({item, openModal, setSelectedOrder}) => {
         style={styles.innerContainer}>
         <ColorBox />
         <View style={styles.details}>
-          <Text style={styles.purchaseId}>{item?.purchase_id}</Text>
-          <Text
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={styles.address}>
-            {item?.delivery_address[0]?.first_name}{' '}
-            {item?.delivery_address[0]?.last_name},{' '}
-            {item?.delivery_address[0]?.address},{' '}
-            {item?.delivery_address[0]?.street}
+          <Text style={styles.purchaseId}>
+            {item?.purchase_id || item?.purchase}
           </Text>
+          {item.delivery_address ? (
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.address}>
+              {item.delivery_address.map(
+                item =>
+                  `${item.first_name} ${item.last_name}, ${item.street}, ${item.address}`,
+              )}
+            </Text>
+          ) : (
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.address}>
+              No delivery address available
+            </Text>
+          )}
         </View>
         <TouchableOpacity
           style={styles.btn}
@@ -65,8 +71,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   address: {
-    color: '#474747', 
-    fontSize: 12
+    color: '#474747',
+    fontSize: 12,
   },
   btn: {
     backgroundColor: '#007DDC',

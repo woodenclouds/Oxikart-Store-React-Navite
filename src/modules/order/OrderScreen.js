@@ -15,6 +15,7 @@ import axiosInstance from '../../component/api';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
 import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
+import Header from '../../component/Header';
 
 const OrderScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -84,9 +85,7 @@ const OrderScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Orders</Text>
-      </View>
+      <Header title="Orders"/>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={[styles.tab, active === 'Pending' && styles.activeTab]}
@@ -185,29 +184,34 @@ const OrderScreen = () => {
 export default OrderScreen;
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#fff'},
-  header: {
+  container: {
+    flex: 1, 
+    backgroundColor: '#FFFFFF'
+  },
+  tabContainer: {
+    flexDirection: 'row', 
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
+    paddingTop: 10,
   },
-  headerText: {
-    color: '#212121',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  tabContainer: {flexDirection: 'row', paddingHorizontal: 20},
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
     height: 40,
   },
-  activeTab: {borderBottomWidth: 2, borderBottomColor: '#4A4D4E'},
-  tabText: {color: '#6E7475', fontSize: 14},
+  activeTab: {
+    borderBottomWidth: 2, 
+    borderBottomColor: '#4A4D4E'
+  },
+  tabText: {
+    color: '#6E7475', 
+    fontSize: 14
+  },
   activeTabText: {color: '#4A4D4E'},
-  content: {paddingHorizontal: 20, paddingVertical: 20},
+  content: {
+    paddingHorizontal: 20, 
+    paddingVertical: 20
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',

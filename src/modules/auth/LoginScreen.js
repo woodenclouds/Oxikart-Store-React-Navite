@@ -37,7 +37,6 @@ const LoginScreen = ({navigation}) => {
           password: loginData.password,
         },
       );
-      console.log('user id', response?.data?.app_data.data.pk);
 
       if (response.data.app_data.StatusCode === 6000) {
         saveItem('token', response?.data?.app_data.data.access_token);
@@ -74,7 +73,6 @@ const LoginScreen = ({navigation}) => {
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      // keyboardVerticalOffset={90}
       style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -87,7 +85,7 @@ const LoginScreen = ({navigation}) => {
             <Image source={LogBg} style={styles.image} />
           </View>
           <View style={styles.cover}>
-            <View style={{gap: 16}}>
+            <View style={{gap: 10}}>
               <Text style={textStyle.signIn}>Sign In</Text>
               <Text style={textStyle.subSign}>
                 Login to your account and explore{'\n'}the orders
@@ -158,9 +156,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     paddingHorizontal: 20,
-    paddingTop: 40,
+    paddingTop: 20,
     // flex: 1,
-    gap: 50,
+    gap: 30,
     justifyContent: 'space-evenly',
   },
   form: {

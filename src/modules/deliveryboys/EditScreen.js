@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Header from '../../component/includes/Header';
+import Header from '../../component/Header';
 import {icons} from '../../assets/icons';
 import useGetapi from '../../hooks/useGetapi';
 import axiosInstance from '../../component/api';
