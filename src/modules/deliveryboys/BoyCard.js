@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import AddProfile from '../../assets/svg-icons/AddProfile';
 import {BoyImage} from '../../assets/images';
@@ -6,18 +13,29 @@ import Tooltip from '../../component/Tooltip';
 import {icons} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
-
+import axiosInstance from '../../component/api';
 
 const BoyCard = ({item}) => {
+  const [showModal, setShowModal] = useState(false);
+
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const navigation = useNavigation();
 
   const handleEdit = () => {
     console.log('Edit clicked!');
   };
-
-  const handleDelete = () => {
-    console.log('Delete clicked!');
+  
+  const handleDelete = async () => {
+    try {
+      const response = await axiosInstance.post(`accounts/delete-delivery-boys/${item.id}/`);
+      if (response.StatusCode === 6000) {
+        console.log(response.data.message);
+        setShowModal(false);
+        setTooltipVisible(!tooltipVisible);
+      }
+    } catch (error) {
+      console.error('Error deleting delivery boy:', error);
+    }
   };
 
   const handleOpenTooltip = () => {
@@ -43,12 +61,46 @@ const BoyCard = ({item}) => {
             <Image source={icons.edit} />
             <Text style={styles.tooltipText}>Edit</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.toolButton}>
+          <TouchableOpacity
+            style={styles.toolButton}
+            onPress={() => setShowModal(true)}>
             <Image source={icons.delete} />
             <Text style={styles.tooltipText}>Remove</Text>
           </TouchableOpacity>
         </View>
       )}
+
+      <Modal
+        visible={showModal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowModal(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalBox}>
+            <View style={styles.headerRow}>
+              <AddProfile />
+              <Text style={styles.modalHeaderText}>Remove delivery boy?</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={styles.modalText}>
+                Are you sure you want to remove the{'\n'}delivery boy?
+              </Text>
+            </View>
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={styles.modalBtn}
+                onPress={() => setShowModal(false)}>
+                <Text style={{color: '#007DDC'}}>No</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalBtn, {backgroundColor: '#007DDC'}]}
+                onPress={() => handleDelete()}>
+                <Text style={{color: '#fff'}}>Yes</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -70,7 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     position: 'relative',
     marginBottom: 10,
-    zIndex: 1,
+    zIndex: 1000,
     height: 80,
   },
   nameContainer: {
@@ -82,7 +134,7 @@ const styles = StyleSheet.create({
   name: {
     color: '#474747',
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   deliveryBoyId: {
     color: '#474747',
@@ -113,7 +165,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#F8F8F8',
-    zIndex: 999,
+    zIndex: 1,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -131,5 +183,50 @@ const styles = StyleSheet.create({
     color: '#212121',
     fontSize: 14,
     fontWeight: '500',
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalBox: {
+    backgroundColor: '#FFFFFF',
+    padding: 24,
+    borderRadius: 8,
+    elevation: 3,
+    height: 204,
+    width: '90%',
+    justifyContent: 'space-between',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 10,
+  },
+  modalHeaderText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#272727',
+  },
+  modalText: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#6B6B6B',
+    lineHeight: 20,
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalBtn: {
+    width: '48%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#007DDC',
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

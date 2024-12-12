@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector} from 'react-redux';
 
 export const validateForm = (formData, validationSchema) => {
   const errors = {};

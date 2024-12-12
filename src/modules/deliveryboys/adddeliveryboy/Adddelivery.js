@@ -113,12 +113,14 @@ const Adddelivery = () => {
           'accounts/create-delivery-boy/',
           formData,
         );
+        console.log(response, 'success');
+        
         if (response.StatusCode === 6000) {
           setModalMessage('Form submitted successfully');
           setModalVisible(true);
         }
       } catch (error) {
-        console.error('Error submitting form:', error);
+        console.log('Error submitting form:', error);
       }
     }
   };

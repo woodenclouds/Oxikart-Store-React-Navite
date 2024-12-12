@@ -1,7 +1,7 @@
 // axiosInstance.js
 import axios from 'axios';
-import { Alert } from 'react-native';
-import { getItem } from '../../utils/functions';
+import {Alert} from 'react-native';
+import {getItem} from '../../utils/functions';
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.oxikart.in/api/v1/',
@@ -20,24 +20,30 @@ axiosInstance.interceptors.request.use(
   },
   error => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => {
+  response => {
     // Check if response is HTML, indicating a permission error
-    if (typeof response.data === 'string' && response.data.includes('<h1>Permission Denied</h1>')) {
+    if (
+      typeof response.data === 'string' &&
+      response.data.includes('<h1>Permission Denied</h1>')
+    ) {
       console.log('Permission Denied HTML response received');
-      Alert.alert('Permission Denied', 'You are not authorized to access this resource. Please log in again.');
+      Alert.alert(
+        'Permission Denied',
+        'You are not authorized to access this resource. Please log in again.',
+      );
       return Promise.reject(new Error('Permission Denied'));
     }
-    
+
     const appData = response?.data?.app_data;
 
     if (appData && appData.StatusCode === 6000) {
       return appData;
-    } else if (appData && appData.data) {      
+    } else if (appData && appData.data) {
       Alert.alert(appData.data.title, appData.data.message);
       return Promise.reject(new Error('Non-success status code'));
     } else {
@@ -49,12 +55,15 @@ axiosInstance.interceptors.response.use(
   error => {
     console.log(`Error API Endpoint: ${error.config?.url}`, error);
     if (error.response && error.response.status === 401) {
-      Alert.alert('Unauthorized', 'You are not authorized to access this resource.');
+      Alert.alert(
+        'Unauthorized',
+        'You are not authorized to access this resource.',
+      );
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again later.');
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

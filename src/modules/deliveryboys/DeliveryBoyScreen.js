@@ -1,5 +1,6 @@
 import {
   FlatList,
+  Modal,
   StatusBar,
   StyleSheet,
   Text,
@@ -9,7 +10,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import BoyCard from './BoyCard';
 import AddProfile from '../../assets/svg-icons/AddProfile';
-import Modal from '../../component/Modal';
 import {useNavigation} from '@react-navigation/native';
 import {fetchDeliveryBoys} from '../../services/orderService';
 
@@ -25,6 +25,7 @@ const DeliveryBoyScreen = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -56,7 +57,13 @@ const DeliveryBoyScreen = () => {
       <View style={{paddingHorizontal: 20}}>
         <FlatList
           data={deliveryBoys}
-          renderItem={({item}) => <BoyCard key={item.id} item={item} />}
+          renderItem={({item}) => (
+            <BoyCard
+              handleOpenModal={handleOpenModal}
+              key={item.id}
+              item={item}
+            />
+          )}
           style={{paddingVertical: 20}}
           contentContainerStyle={{paddingBottom: 100}}
           onRefresh={() => {
@@ -65,48 +72,6 @@ const DeliveryBoyScreen = () => {
           refreshing={refresh}
         />
       </View>
-      <Modal
-        visible={false}
-        title="Remove delivery boy?"
-        onRequestClose={handleCloseModal}>
-        <View>
-          <Text style={{fontSize: 14, color: '#6B6B6B'}}>
-            Are you sure you want to remove the
-          </Text>
-          <Text style={{fontSize: 14, color: '#6B6B6B'}}>delivery boy?</Text>
-        </View>
-        <View
-          style={{
-            paddingVertical: 15,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity
-            style={{
-              width: '48%',
-              height: 40,
-              borderWidth: 1,
-              borderColor: '#007DDC',
-              borderRadius: 5,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text style={{color: '#007DDC'}}>No</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: '48%',
-              height: 40,
-              borderWidth: 1,
-              backgroundColor: '#007DDC',
-              borderRadius: 5,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text style={{color: '#fff'}}>Yes</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
     </View>
   );
 };
