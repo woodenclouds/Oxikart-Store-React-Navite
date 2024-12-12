@@ -118,6 +118,7 @@ const OrderScreen = () => {
           <TextInput
             style={styles.searchInput}
             placeholder="Search by Product ID"
+            placeholderTextColor="#474747"
           />
         </View>
         {active === 'Pending' ? (
@@ -207,7 +208,9 @@ const styles = StyleSheet.create({
     color: '#6E7475', 
     fontSize: 14
   },
-  activeTabText: {color: '#4A4D4E'},
+  activeTabText: {
+    color: '#4A4D4E'
+  },
   content: {
     paddingHorizontal: 20, 
     paddingVertical: 20
@@ -222,17 +225,32 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  searchInput: {marginLeft: 5},
-  modalContainer: {paddingHorizontal: 20, paddingTop: 30, paddingBottom: 40},
-  modalLabel: {marginBottom: 5},
+  searchInput: {
+    marginLeft: 5,
+    fontSize: 13,
+    fontWeight: '400',
+  },
+  modalContainer: {
+    paddingHorizontal: 20, 
+    paddingTop: 30, 
+    paddingBottom: 40
+  },
+  modalLabel: {
+    marginBottom: 5
+  },
   modalInput: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
     borderRadius: 5,
   },
-  dropdownContainer: {marginTop: 10},
-  bottomContainer: {paddingHorizontal: 25, paddingVertical: 30},
+  dropdownContainer: {
+    marginTop: 10
+  },
+  bottomContainer: {
+    paddingHorizontal: 25, 
+    paddingVertical: 30
+  },
   confirmButton: {
     backgroundColor: '#007DDC',
     paddingVertical: 10,
@@ -240,5 +258,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  confirmButtonText: {color: '#fff', fontWeight: 'bold'},
+  confirmButtonText: {
+    color: '#fff', 
+    fontWeight: 'bold'
+  },
 });

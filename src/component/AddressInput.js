@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: 16,
+    color: '#000'
     // height: 80,
   },
 });

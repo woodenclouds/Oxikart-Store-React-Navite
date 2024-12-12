@@ -1,5 +1,4 @@
 import {
-  Button,
   Image,
   ScrollView,
   StyleSheet,
@@ -11,16 +10,12 @@ import {
 import React, {useEffect, useState} from 'react';
 import BackIcon from '../../../assets/svg-icons/BackIcon';
 import {useNavigation} from '@react-navigation/native';
-import {Picker} from '@react-native-picker/picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import ImageUploadComponent from '../../../component/ImageUploadComponent';
 import CameraIcon from '../../../assets/svg-icons/CameraIcon';
 import {InputLabel} from '../../../component/inputs';
 import AddressInput from '../../../component/AddressInput';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import DatePickerModal from '../../../component/DatePickerModal';
 import {deliveryBoySchema} from '../../../utils/formSchemas';
-import ValidationModal from '../../../component/ValidationModal';
 import {validateForm} from '../../../utils/functions';
 import axiosInstance from '../../../component/api';
 import RNFS from 'react-native-fs';
@@ -30,8 +25,7 @@ import SuccessModal from '../../../component/SuccessModal';
 import {UserIcon} from '../../../assets/svg-icons';
 
 const Adddelivery = () => {
-  const navigate = useNavigation();
-  // const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -46,28 +40,39 @@ const Adddelivery = () => {
     address: '',
     password: '',
   });
-  const {data} = useGetapi('general/list-country/');
 
   const [country, setCountry] = useState([]);
-  const [state, setState] = useState([]);
+  const [stateList, setStateList] = useState([]);
 
+  const [openDOB, setOpenDOB] = useState(false);
+  const [openJoiningDate, setOpenJoiningDate] = useState(false);
+
+  const [image, setImage] = useState();
+  const [errors, setErrors] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const {data} = useGetapi('general/list-country/');
+  
   useEffect(() => {
     if (data?.data) {
       setCountry(data?.data?.map(item => ({label: item.name, value: item.id})));
     }
   }, [data]);
 
-  const [openDOB, setOpenDOB] = useState(false);
-  const [openJoiningDate, setOpenJoiningDate] = useState(false);
+  useEffect(() => {
+    if (formData.country) {
+      axiosInstance.get(`general/list-states/${formData.country}`).then(res => {
+        setStateList(
+          res?.data?.message?.map(item => ({label: item.name, value: item.id})),
+        );
+      });
+    }
+  }, [formData.country]);
 
   const handleInputChange = (field, value) => {
     setFormData({...formData, [field]: value});
   };
-
-  const [image, setImage] = useState();
-  const [errors, setErrors] = useState({});
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
 
   const ImagePicker = async () => {
     let options = {
@@ -95,7 +100,7 @@ const Adddelivery = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrors = validateForm(formData, deliveryBoySchema);
     setErrors(validationErrors);
 
@@ -103,41 +108,29 @@ const Adddelivery = () => {
       setModalMessage('Please fix the errors in the form');
       setModalVisible(true);
     } else {
-      console.log(formData, 'redddd');
-      axiosInstance
-        .post('accounts/create-delivery-boy/', formData)
-        .then(res => {
-          console.log(formData.image, '___image');
-          if (res.StatusCode === 6000) {
-            handleButtonClick();
-          }
-        });
-      // setModalMessage('Form submitted successfully');
-      // setModalVisible(true);
-    }
-  };
-  useEffect(() => {
-    if (formData.country) {
-      axiosInstance.get(`general/list-states/${formData.country}`).then(res => {
-        console.log(res.data.message, 'tertttetet');
-        setState(
-          res?.data?.message?.map(item => ({label: item.name, value: item.id})),
+      try {
+        const response = await axiosInstance.post(
+          'accounts/create-delivery-boy/',
+          formData,
         );
-      });
+        if (response.StatusCode === 6000) {
+          setModalMessage('Form submitted successfully');
+          setModalVisible(true);
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
     }
-  }, [formData.country]);
-  const handleButtonClick = () => {
-    // Show the success modal
-    setModalVisible(true);
   };
 
   const handleCloseModal = () => {
     setModalVisible(false);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigate.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
         <Text style={styles.headerText}>Add delivery boy</Text>
@@ -270,17 +263,7 @@ const Adddelivery = () => {
             </TouchableOpacity>
             {errors.dob && <Text style={styles.error}>{errors.dob}</Text>}
           </View>
-          <View>
-            <InputLabel>State</InputLabel>
-            <Dropdown
-              items={state}
-              onValueChange={value =>
-                setFormData(prev => ({...prev, state: value}))
-              }
-              placeholder={{label: 'Select state', value: null}}
-            />
-            {errors.state && <Text style={styles.error}>{errors.state}</Text>}
-          </View>
+
           <View>
             <InputLabel>Country</InputLabel>
             <Dropdown
@@ -294,6 +277,19 @@ const Adddelivery = () => {
               <Text style={styles.error}>{errors.country}</Text>
             )}
           </View>
+
+          <View>
+            <InputLabel>State</InputLabel>
+            <Dropdown
+              items={stateList}
+              onValueChange={value =>
+                setFormData(prev => ({...prev, state: value}))
+              }
+              placeholder={{label: 'Select state', value: null}}
+            />
+            {errors.state && <Text style={styles.error}>{errors.state}</Text>}
+          </View>
+
           <View>
             <InputLabel>Joining date</InputLabel>
             <TouchableOpacity
@@ -363,7 +359,7 @@ const Adddelivery = () => {
       <SuccessModal
         visible={modalVisible}
         onClose={handleCloseModal}
-        message="Operation was successful!"
+        message={modalMessage}
         navigateTo="Delivery Boys"
       />
     </View>
