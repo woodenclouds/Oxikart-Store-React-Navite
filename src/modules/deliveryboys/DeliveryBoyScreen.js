@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Modal,
   StatusBar,
   StyleSheet,
   Text,
@@ -14,17 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import {fetchDeliveryBoys} from '../../services/orderService';
 
 const DeliveryBoyScreen = () => {
-  const [showModal, setShowModal] = useState(false);
   const [deliveryBoys, setDeliveryBoys] = useState([]);
   const [refresh, setRefresh] = useState(false);
-
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
   const navigation = useNavigation();
 
@@ -59,7 +49,6 @@ const DeliveryBoyScreen = () => {
           data={deliveryBoys}
           renderItem={({item}) => (
             <BoyCard
-              handleOpenModal={handleOpenModal}
               key={item.id}
               item={item}
             />

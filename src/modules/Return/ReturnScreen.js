@@ -1,6 +1,5 @@
 import {
   FlatList,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -13,9 +12,8 @@ import {SearchIcon} from '../../assets/svg-icons';
 import OrderCard from '../../component/module/OrderCard';
 import ReturnCard from '../../component/module/ReturnCard';
 import axiosInstance from '../../component/api';
-import Header from '../../component/Header';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
-import Dropdown from '../../utils/components/Dropdown';
+import TitleHeader from '../../component/TitleHeader';
 
 const ReturnScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -53,7 +51,7 @@ const ReturnScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      <Header title="Returns" />
+      <TitleHeader title="Returns" />
       <View style={{paddingHorizontal: 20, paddingTop: 10}}>
         <View style={styles.headerTabs}>
           <TouchableOpacity

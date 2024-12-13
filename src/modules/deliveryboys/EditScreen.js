@@ -18,11 +18,13 @@ const EditScreen = ({route}) => {
   const {id} = route.params;
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({});
+
   useEffect(() => {
     axiosInstance.get(`accounts/delivery-boy-single-view/${id}/`).then(res => {
       setProfile(res.data.data);
     });
   }, [id]);
+  
   const {data} = useGetapi(`accounts/delivery-boy-single-view/${id}/`);
 
   const handleEditToggle = () => {
@@ -32,7 +34,7 @@ const EditScreen = ({route}) => {
   const handleInputChange = (key, value) => {
     setProfile({...profile, [key]: value});
   };
-  console.log(data);
+
   const renderProfileDetail = (
     label,
     key,
@@ -51,7 +53,7 @@ const EditScreen = ({route}) => {
           secureTextEntry={isPassword}
         />
       ) : (
-        <Text style={styles.value}>{value}</Text>
+        <TextInput style={styles.input} editable={false} defaultValue={value} />
       )}
     </View>
   );
@@ -64,11 +66,10 @@ const EditScreen = ({route}) => {
       </TouchableOpacity>
     ) : (
       <TouchableOpacity style={styles.editContainer} onPress={handleEditToggle}>
-        {/* <Image source={icons.edit} /> */}
         <Text style={{color: '#000'}}>Cancel</Text>
       </TouchableOpacity>
     );
-  console.log(id);
+
   return (
     <View style={styles.container}>
       <Header title={data?.data?.full_name} right={right} />
@@ -78,15 +79,19 @@ const EditScreen = ({route}) => {
             source={{uri: 'https://via.placeholder.com/150'}}
             style={styles.profileImage}
           />
-          <View>
+          <View style={{width: '60%'}}>
             {isEditing ? (
               <TextInput
-                style={styles.input}
+                style={styles.name}
                 value={profile.full_name}
                 onChangeText={value => handleInputChange('full_name', value)}
               />
             ) : (
-              <Text style={styles.name}>{profile.full_name}</Text>
+              <TextInput
+                style={styles.name}
+                defaultValue={profile.full_name}
+                editable={false}
+              />
             )}
             <Text style={styles.id}>ID : {profile.id}</Text>
           </View>
@@ -167,35 +172,39 @@ export default EditScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   editContainer: {
     flexDirection: 'row',
-    gap: 5,
+    gap: 8,
+    alignItems: 'center',
   },
   contentContainer: {
-    padding: 15,
+    padding: 20,
   },
   profileContainer: {
     alignItems: 'center',
     marginBottom: 20,
     flexDirection: 'row',
     gap: 20,
+    paddingBottom: 30,
+    borderBottomColor: '#EEEEEE',
+    borderBottomWidth: 1,
   },
   profileImage: {
-    width: 100,
-    height: 100,
+    width: 85,
+    height: 85,
     borderRadius: 50,
-    marginBottom: 10,
   },
   name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#272727',
   },
   id: {
     fontSize: 14,
-    color: '#888',
+    color: '#676767',
+    fontWeight: '400',
   },
   detailsContainer: {
     marginBottom: 20,
@@ -205,19 +214,29 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#888',
+    color: '#676767',
     marginBottom: 5,
+    fontWeight: '400',
+  },
+  valueContainer: {
+    backgroundColor: '#F5F6F7',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 4,
   },
   value: {
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#000',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 10,
-    borderRadius: 5,
-    fontSize: 16,
-    color: '#000',
+    backgroundColor: '#F5F6F7',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#1A1919',
   },
   editText: {
     fontSize: 16,

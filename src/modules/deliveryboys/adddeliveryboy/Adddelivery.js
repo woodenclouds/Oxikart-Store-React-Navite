@@ -23,6 +23,7 @@ import useGetapi from '../../../hooks/useGetapi';
 import Dropdown from '../../../component/inputs/DropDown';
 import SuccessModal from '../../../component/SuccessModal';
 import {UserIcon} from '../../../assets/svg-icons';
+import Header from '../../../component/Header';
 
 const Adddelivery = () => {
   const navigation = useNavigation();
@@ -131,12 +132,7 @@ const Adddelivery = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <BackIcon />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Add delivery boy</Text>
-      </View>
+      <Header title="Add delivery boy"/>
       <ScrollView>
         <View style={styles.imageContainer}>
           <View style={styles.circle}>

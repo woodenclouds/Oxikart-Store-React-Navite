@@ -3,20 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
-  ScrollView,
   StatusBar,
 } from 'react-native';
 import {Avatar} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
-import {saveItem} from '../../utils/functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserInfo} from '../../store/actions/userActions';
-import useGetapi from '../../hooks/useGetapi';
 import axiosInstance from '../../component/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Header from '../../component/Header';
+import TitleHeader from '../../component/TitleHeader';
 
 const ProfileScreen = () => {
   const dispatch = useDispatch();
@@ -43,7 +38,7 @@ const ProfileScreen = () => {
 
   return (
     <>
-      <Header title="Profile" />
+      <TitleHeader title="Profile" />
       <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
       <View style={styles.container}>
         <View style={styles.profileContainer}>

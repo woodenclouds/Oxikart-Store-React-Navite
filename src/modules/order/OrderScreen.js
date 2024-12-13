@@ -15,7 +15,7 @@ import axiosInstance from '../../component/api';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
 import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
-import Header from '../../component/Header';
+import TitleHeader from '../../component/TitleHeader';
 
 const OrderScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -85,7 +85,7 @@ const OrderScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      <Header title="Orders"/>
+      <TitleHeader title="Orders"/>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={[styles.tab, active === 'Pending' && styles.activeTab]}
