@@ -13,7 +13,7 @@ export const fetchDeliveryBoysAsync = createAsyncThunk(
 const deliveryBoysSlice = createSlice({
   name: 'deliveryBoys',
   initialState: {
-    data: [],
+    deliveryBoys: [],
     status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
   },
@@ -25,7 +25,7 @@ const deliveryBoysSlice = createSlice({
       })
       .addCase(fetchDeliveryBoysAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = action.payload;
+        state.deliveryBoys = action.payload;
       })
       .addCase(fetchDeliveryBoysAsync.rejected, (state, action) => {
         state.status = 'failed';

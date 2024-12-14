@@ -13,8 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import {fetchDeliveryBoys} from '../../services/orderService';
 
 const DeliveryBoyScreen = () => {
-  // const [deliveryBoys, setDeliveryBoys] = useState([]);
-  const { deliveryBoys } = useSelector((state) => state.deliveryBoys);
+  const [deliveryBoys, setDeliveryBoys] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
   const navigation = useNavigation();
@@ -22,9 +21,7 @@ const DeliveryBoyScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetchDeliveryBoys();
-        console.log("delivery boys", res);
-        
+        const res = await fetchDeliveryBoys();   
         setDeliveryBoys(res.data);
       } catch (error) {
         console.error('Error fetching delivery boys:', error);

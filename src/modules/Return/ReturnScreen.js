@@ -17,6 +17,7 @@ import TitleHeader from '../../component/TitleHeader';
 import CustomButton from '../../component/CustomButton';
 import { fetchDeliveryBoys } from '../../services/orderService';
 import Dropdown from '../../utils/components/Dropdown';
+import { useSelector } from 'react-redux';
 
 const ReturnScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -25,9 +26,11 @@ const ReturnScreen = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [deliveryBoys, setDeliveryBoys] = useState([]);
+  // const [deliveryBoys, setDeliveryBoys] = useState([]);
   const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
 
+  const { deliveryBoys } = useSelector((state) => state.deliveryBoys);
+  
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
@@ -51,19 +54,19 @@ const ReturnScreen = () => {
     fetchReturnOrders();
   }, [refresh, active]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetchDeliveryBoys();
-        setDeliveryBoys(
-          res.data.map(item => ({label: item.full_name, value: item.id})),
-        );
-      } catch (error) {
-        console.error('Error fetching delivery boys:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await fetchDeliveryBoys();
+  //       setDeliveryBoys(
+  //         res.data.map(item => ({label: item.full_name, value: item.id})),
+  //       );
+  //     } catch (error) {
+  //       console.error('Error fetching delivery boys:', error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   const handleSubmit = async () => {};
 

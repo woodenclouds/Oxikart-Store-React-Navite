@@ -21,10 +21,6 @@ const BoyCard = ({item}) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const navigation = useNavigation();
 
-  const handleEdit = () => {
-    console.log('Edit clicked!');
-  };
-  
   const handleDelete = async () => {
     try {
       const response = await axiosInstance.post(`accounts/delete-delivery-boys/${item.id}/`);

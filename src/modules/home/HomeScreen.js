@@ -27,7 +27,7 @@ import Loading from '../../component/Loading';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
 import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeliveryBoysAsync } from '../../redux/slices/deliveryBoysSlice';
 
 const HomeScreen = () => {
@@ -49,15 +49,6 @@ const HomeScreen = () => {
       dispatch(fetchDeliveryBoysAsync());
     }
   }, [status, dispatch]);
-
-  if (status === 'loading') return <Loading />;
-  if (status === 'failed') {
-    return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    )
-  } 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +88,15 @@ const HomeScreen = () => {
   if (loading) {
     return <Loading />;
   }
+
+  if (status === 'loading') return <Loading />;
+  if (status === 'failed') {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    )
+  } 
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -268,6 +268,7 @@ const HomeScreen = () => {
               value={selectedOrder?.purchase_id}
               editable={false}
               placeholder="Enter Order ID"
+              placeholderTextColor="#C3C3C3"
             />
           </View>
           <View style={styles.dropdownContainer}>
@@ -342,12 +343,14 @@ const styles = StyleSheet.create({
   },
   modalLabel: {
     marginBottom: 5,
+    color: "#747474",
   },
   modalInput: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
     borderRadius: 5,
+    color: "#C3C3C3"
   },
   dropdownContainer: {
     marginTop: 10,
