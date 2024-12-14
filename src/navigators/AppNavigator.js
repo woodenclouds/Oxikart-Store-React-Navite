@@ -4,13 +4,13 @@ import AuthStack from './AuthStackNavigation';
 import MainTab from './TabNavigations';
 import AppStack from './StackNavigations';
 import {getItem} from '../utils/functions';
-import {setUserInfo} from '../store/actions/userActions';
 import DeliveryStack from './DeliveryStack';
+import { setUserInfo } from '../redux/slices/userSlice';
 
 const AppNavigator = () => {
   const dispatch = useDispatch();
   const userState = useSelector(state => state.user);
-
+  
   const fetchData = async () => {
     const token = await getItem('token');
     const role = await getItem('role');

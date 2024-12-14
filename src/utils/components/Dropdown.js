@@ -44,7 +44,7 @@ const Dropdown = ({options, selectedValue, onValueChange, placeholder}) => {
                 <TouchableOpacity
                   style={styles.option}
                   onPress={() => handleSelect(item)}>
-                  <Text style={{color: "#000"}}>{item.label}</Text>
+                  <Text style={{color: "#000"}}>{item.full_name}</Text>
                 </TouchableOpacity>
               )}
             />

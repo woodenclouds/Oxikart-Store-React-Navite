@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import {Avatar} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
-import {setUserInfo} from '../../store/actions/userActions';
 import axiosInstance from '../../component/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TitleHeader from '../../component/TitleHeader';
+import { setUserInfo } from '../../redux/slices/userSlice';
 
 const ProfileScreen = () => {
   const dispatch = useDispatch();

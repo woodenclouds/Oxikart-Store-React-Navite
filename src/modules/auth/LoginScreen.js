@@ -15,10 +15,10 @@ import textStyle from '../../assets/styles/textStyles';
 import {InputLabel, PasswordField, TextField} from '../../component/inputs';
 import {saveItem, validateForm} from '../../utils/functions';
 import {loginSchema} from '../../utils/formSchemas';
-import {setUserInfo} from '../../store/actions/userActions';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {setUserInfo} from '../../redux/slices/userSlice';
 
 const LoginScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -43,6 +43,14 @@ const LoginScreen = ({navigation}) => {
         saveItem('role', response?.data?.app_data.data.roles[0]);
         saveItem('user_id', response?.data?.app_data.data.pk);
 
+        // dispatch(
+        //   setUserInfo({
+        //     isVerified: true,
+        //     token: response?.data?.app_data.data.access_token,
+        //     role: response?.data?.app_data.data.roles[0],
+        //     user_id: response?.data?.app_data.data.pk,
+        //   }),
+        // );
         dispatch(
           setUserInfo({
             isVerified: true,
@@ -71,9 +79,7 @@ const LoginScreen = ({navigation}) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <StatusBar

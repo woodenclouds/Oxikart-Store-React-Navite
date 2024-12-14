@@ -27,6 +27,8 @@ import Loading from '../../component/Loading';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
 import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
+import { useDispatch } from 'react-redux';
+import { fetchDeliveryBoysAsync } from '../../redux/slices/deliveryBoysSlice';
 
 const HomeScreen = () => {
   const navigations = useNavigation();
@@ -37,7 +39,25 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
-  const [deliveryBoys, setDeliveryBoys] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const { deliveryBoys, status, error } = useSelector((state) => state.deliveryBoys);
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchDeliveryBoysAsync());
+    }
+  }, [status, dispatch]);
+
+  if (status === 'loading') return <Loading />;
+  if (status === 'failed') {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    )
+  } 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,19 +80,19 @@ const HomeScreen = () => {
     });
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetchDeliveryBoys();
-        setDeliveryBoys(
-          res.data.map(item => ({label: item.full_name, value: item.id})),
-        );
-      } catch (error) {
-        console.error('Error fetching delivery boys:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await fetchDeliveryBoys();
+  //       setDeliveryBoys(
+  //         res.data.map(item => ({label: item.full_name, value: item.id})),
+  //       );
+  //     } catch (error) {
+  //       console.error('Error fetching delivery boys:', error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   if (loading) {
     return <Loading />;
@@ -85,7 +105,7 @@ const HomeScreen = () => {
     try {
       const res = await assignOrder(
         selectedOrder?.purchase_id,
-        selectedDeliveryBoy.value,
+        selectedDeliveryBoy.id,
       );
       if (res && res.data) {
         if (res.StatusCode === 6000) {
@@ -346,5 +366,14 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  errorContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  errorText: {
+    color: '#FF0000',
+    marginBottom: 10,
   },
 });

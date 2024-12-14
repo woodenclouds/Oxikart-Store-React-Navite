@@ -13,7 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import {fetchDeliveryBoys} from '../../services/orderService';
 
 const DeliveryBoyScreen = () => {
-  const [deliveryBoys, setDeliveryBoys] = useState([]);
+  // const [deliveryBoys, setDeliveryBoys] = useState([]);
+  const { deliveryBoys } = useSelector((state) => state.deliveryBoys);
   const [refresh, setRefresh] = useState(false);
 
   const navigation = useNavigation();
