@@ -14,6 +14,9 @@ import ReturnCard from '../../component/module/ReturnCard';
 import axiosInstance from '../../component/api';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import TitleHeader from '../../component/TitleHeader';
+import CustomButton from '../../component/CustomButton';
+import { fetchDeliveryBoys } from '../../services/orderService';
+import Dropdown from '../../utils/components/Dropdown';
 
 const ReturnScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -22,6 +25,8 @@ const ReturnScreen = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [deliveryBoys, setDeliveryBoys] = useState([]);
+  const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -45,6 +50,20 @@ const ReturnScreen = () => {
     };
     fetchReturnOrders();
   }, [refresh, active]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchDeliveryBoys();
+        setDeliveryBoys(
+          res.data.map(item => ({label: item.full_name, value: item.id})),
+        );
+      } catch (error) {
+        console.error('Error fetching delivery boys:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSubmit = async () => {};
 
@@ -124,33 +143,21 @@ const ReturnScreen = () => {
         onClose={closeModal}
         title="Confirm & assign">
         <View style={styles.modalContainer}>
-          <View>
-            <Text style={styles.modalLabel}>Order ID*</Text>
-            <TextInput
-              style={styles.modalInput}
-              value={selectedOrder?.purchase}
-              editable={false}
-              placeholder="Enter Order ID"
-            />
+          <View style={{flexDirection: "row"}}> 
+            <Text style={styles.modalLabel}>Order ID :</Text>
+            <Text style={styles.modalInput}>{selectedOrder?.purchase}</Text>
           </View>
           <View style={styles.dropdownContainer}>
-            <Text style={styles.modalLabel}>Delivery boy*</Text>
-            {/* <Dropdown
-              placeholder="Select delivery boy"
+            <Text style={styles.modalLabel}>Pickup boy</Text>
+            <Dropdown
+              placeholder="Select pickup boy"
               options={deliveryBoys}
               onValueChange={setSelectedDeliveryBoy}
               selectedValue={selectedDeliveryBoy}
-            /> */}
+            />
           </View>
         </View>
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={handleSubmit}
-            accessibilityLabel="Confirm Order Assignment">
-            <Text style={styles.confirmButtonText}>Confirm</Text>
-          </TouchableOpacity>
-        </View>
+        <CustomButton title="Confirm" onPress={handleSubmit}/>
       </BottomSheetModal>
     </View>
   );
@@ -193,35 +200,21 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   modalContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 30,
-    paddingBottom: 40,
+    paddingHorizontal: 20, 
+    paddingTop: 25, 
+    paddingBottom: 30,
+    gap: 8,
   },
   modalLabel: {
-    marginBottom: 5,
+    marginBottom: 8,
+    color: "#747474",
   },
   modalInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
+    color: "#474747",
+    fontSize: 14,
+    marginLeft: 10,
   },
   dropdownContainer: {
-    marginTop: 10,
-  },
-  bottomContainer: {
-    paddingHorizontal: 25,
-    paddingVertical: 30,
-  },
-  confirmButton: {
-    backgroundColor: '#007DDC',
-    paddingVertical: 10,
-    borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  confirmButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    marginTop: 10
   },
 });

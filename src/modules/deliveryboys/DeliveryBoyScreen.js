@@ -22,6 +22,8 @@ const DeliveryBoyScreen = () => {
     const fetchData = async () => {
       try {
         const res = await fetchDeliveryBoys();
+        console.log("delivery boys", res);
+        
         setDeliveryBoys(res.data);
       } catch (error) {
         console.error('Error fetching delivery boys:', error);

@@ -27,6 +27,7 @@ import DeliveryBoyBlue from './DeliveryBoyBlue';
 import RightArrow from './rightArrow';
 import TimeIcon from './TimeIcon';
 import UserIcon from './Users.svg';
+import DownArrrow from './down-arrow.svg';
 
 export {
   Account,
@@ -57,5 +58,6 @@ export {
   StarSolid,
   TimeIcon,
   WishlistIcon,
-  UserIcon
+  UserIcon,
+  DownArrrow,
 };

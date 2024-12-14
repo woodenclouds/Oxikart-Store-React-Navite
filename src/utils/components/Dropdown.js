@@ -7,6 +7,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
+import { DownArrrow } from '../../assets/svg-icons';
 
 const Dropdown = ({options, selectedValue, onValueChange, placeholder}) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -24,6 +25,7 @@ const Dropdown = ({options, selectedValue, onValueChange, placeholder}) => {
         <Text style={styles.dropdownText}>
           {selectedValue ? selectedValue.label : placeholder}
         </Text>
+        <DownArrrow/>
       </TouchableOpacity>
       <Modal
         visible={isModalVisible}
@@ -42,7 +44,7 @@ const Dropdown = ({options, selectedValue, onValueChange, placeholder}) => {
                 <TouchableOpacity
                   style={styles.option}
                   onPress={() => handleSelect(item)}>
-                  <Text>{item.label}</Text>
+                  <Text style={{color: "#000"}}>{item.label}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -57,11 +59,15 @@ const styles = StyleSheet.create({
   dropdown: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
+    paddingVertical: 16,
     borderRadius: 5,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems: 'center',
   },
   dropdownText: {
-    color: '#333',
+    color: "#C3C3C3"
   },
   overlay: {
     flex: 1,
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
   option: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#EEEEEE',
   },
 });
 

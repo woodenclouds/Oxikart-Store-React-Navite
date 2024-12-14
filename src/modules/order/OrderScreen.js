@@ -16,6 +16,7 @@ import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
 import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
 import TitleHeader from '../../component/TitleHeader';
+import CustomButton from '../../component/CustomButton';
 
 const OrderScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -157,10 +158,11 @@ const OrderScreen = () => {
               value={selectedOrder?.purchase_id}
               editable={false}
               placeholder="Enter Order ID"
+              placeholderTextColor="#C3C3C3"
             />
           </View>
           <View style={styles.dropdownContainer}>
-            <Text style={styles.modalLabel}>Delivery boy*</Text>
+            <Text style={styles.modalLabel}>Delivery boy</Text>
             <Dropdown
               placeholder="Select delivery boy"
               options={deliveryBoys}
@@ -169,14 +171,7 @@ const OrderScreen = () => {
             />
           </View>
         </View>
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={handleSubmit}
-            accessibilityLabel="Confirm Order Assignment">
-            <Text style={styles.confirmButtonText}>Confirm</Text>
-          </TouchableOpacity>
-        </View>
+        <CustomButton title="Confirm" onPress={handleSubmit}/>
       </BottomSheetModal>
     </View>
   );
@@ -232,34 +227,23 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     paddingHorizontal: 20, 
-    paddingTop: 30, 
-    paddingBottom: 40
+    paddingTop: 25, 
+    paddingBottom: 30,
+    gap: 8,
   },
   modalLabel: {
-    marginBottom: 5
+    marginBottom: 8,
+    color: "#747474",
   },
   modalInput: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
+    paddingHorizontal: 16,
     borderRadius: 5,
+    color: "#C3C3C3"
   },
   dropdownContainer: {
     marginTop: 10
-  },
-  bottomContainer: {
-    paddingHorizontal: 25, 
-    paddingVertical: 30
-  },
-  confirmButton: {
-    backgroundColor: '#007DDC',
-    paddingVertical: 10,
-    borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  confirmButtonText: {
-    color: '#fff', 
-    fontWeight: 'bold'
   },
 });

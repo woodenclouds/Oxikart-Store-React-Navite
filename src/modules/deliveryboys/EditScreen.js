@@ -13,11 +13,14 @@ import {icons} from '../../assets/icons';
 import useGetapi from '../../hooks/useGetapi';
 import axiosInstance from '../../component/api';
 import {formatDateString} from '../../utils/functions';
+import CustomButton from '../../component/CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const EditScreen = ({route}) => {
   const {id} = route.params;
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({});
+  const navigation = useNavigation();
 
   useEffect(() => {
     axiosInstance.get(`accounts/delivery-boy-single-view/${id}/`).then(res => {
@@ -163,6 +166,7 @@ const EditScreen = ({route}) => {
           )}
         </View>
       </ScrollView>
+      {isEditing && <CustomButton title="Save"/>}
     </View>
   );
 };
