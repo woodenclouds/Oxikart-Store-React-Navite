@@ -24,9 +24,11 @@ import Dropdown from '../../../component/inputs/DropDown';
 import SuccessModal from '../../../component/SuccessModal';
 import {UserIcon} from '../../../assets/svg-icons';
 import Header from '../../../component/Header';
+import { useDispatch } from 'react-redux';
+import { fetchDeliveryBoysAsync } from '../../../redux/slices/deliveryBoysSlice';
 
 const Adddelivery = () => {
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -114,11 +116,11 @@ const Adddelivery = () => {
           'accounts/create-delivery-boy/',
           formData,
         );
-        console.log(response, 'success');
         
         if (response.StatusCode === 6000) {
           setModalMessage('Form submitted successfully');
           setModalVisible(true);
+          dispatch(fetchDeliveryBoysAsync());
         }
       } catch (error) {
         console.log('Error submitting form:', error);

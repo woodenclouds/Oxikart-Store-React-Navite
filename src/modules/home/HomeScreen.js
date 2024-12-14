@@ -26,9 +26,10 @@ import {useNavigation} from '@react-navigation/native';
 import Loading from '../../component/Loading';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
-import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
+import {assignOrder} from '../../services/orderService';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeliveryBoysAsync } from '../../redux/slices/deliveryBoysSlice';
+import CustomButton from '../../component/CustomButton';
 
 const HomeScreen = () => {
   const navigations = useNavigation();
@@ -71,20 +72,6 @@ const HomeScreen = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await fetchDeliveryBoys();
-  //       setDeliveryBoys(
-  //         res.data.map(item => ({label: item.full_name, value: item.id})),
-  //       );
-  //     } catch (error) {
-  //       console.error('Error fetching delivery boys:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   if (loading) {
     return <Loading />;
   }
@@ -109,7 +96,7 @@ const HomeScreen = () => {
       );
       if (res && res.data) {
         if (res.StatusCode === 6000) {
-          setModalVisible(false);
+          closeModal();
         } else {
           console.log('Unexpected StatusCode:', res.StatusCode);
         }
@@ -281,14 +268,7 @@ const HomeScreen = () => {
             />
           </View>
         </View>
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={handleSubmit}
-            accessibilityLabel="Confirm Order Assignment">
-            <Text style={styles.confirmButtonText}>Confirm</Text>
-          </TouchableOpacity>
-        </View>
+        <CustomButton title="Confirm" onPress={handleSubmit}/>
       </BottomSheetModal>
     </View>
   );
@@ -337,43 +317,31 @@ const styles = StyleSheet.create({
     right: 0,
   },
   modalContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 30,
-    paddingBottom: 40,
+    paddingHorizontal: 20, 
+    paddingTop: 25, 
+    paddingBottom: 30,
+    gap: 8,
   },
   modalLabel: {
-    marginBottom: 5,
+    marginBottom: 8,
     color: "#747474",
   },
   modalInput: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
+    paddingHorizontal: 16,
     borderRadius: 5,
     color: "#C3C3C3"
   },
   dropdownContainer: {
-    marginTop: 10,
-  },
-  bottomContainer: {
-    paddingHorizontal: 25,
-    paddingVertical: 30,
-  },
-  confirmButton: {
-    backgroundColor: '#007DDC',
-    paddingVertical: 10,
-    borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  confirmButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    marginTop: 10
   },
   errorContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
+    flex: 1,
   },
   errorText: {
     color: '#FF0000',

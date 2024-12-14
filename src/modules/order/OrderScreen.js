@@ -14,7 +14,7 @@ import AssignedCard from '../../component/module/AssignedCard';
 import axiosInstance from '../../component/api';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
-import {assignOrder, fetchDeliveryBoys} from '../../services/orderService';
+import {assignOrder} from '../../services/orderService';
 import TitleHeader from '../../component/TitleHeader';
 import CustomButton from '../../component/CustomButton';
 import { useSelector } from 'react-redux';
@@ -27,7 +27,6 @@ const OrderScreen = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [assignedOrders, setAssignedOrder] = useState([]);
   const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
-  // const [deliveryBoys, setDeliveryBoys] = useState([]);
 
   const { deliveryBoys } = useSelector((state) => state.deliveryBoys);
 
@@ -55,20 +54,6 @@ const OrderScreen = () => {
     };
     fetchOrders();
   }, [refresh, active]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await fetchDeliveryBoys();
-  //       setDeliveryBoys(
-  //         res.data.map(item => ({label: item.full_name, value: item.id})),
-  //       );
-  //     } catch (error) {
-  //       console.error('Error fetching delivery boys:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   const handleSubmit = async () => {
     try {
@@ -227,6 +212,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 13,
     fontWeight: '400',
+    color: '#474747',
   },
   modalContainer: {
     paddingHorizontal: 20, 

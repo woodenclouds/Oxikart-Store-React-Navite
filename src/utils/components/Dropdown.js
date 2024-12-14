@@ -23,7 +23,7 @@ const Dropdown = ({options, selectedValue, onValueChange, placeholder}) => {
         style={styles.dropdown}
         onPress={() => setModalVisible(true)}>
         <Text style={styles.dropdownText}>
-          {selectedValue ? selectedValue.label : placeholder}
+          {selectedValue ? selectedValue.full_name : placeholder}
         </Text>
         <DownArrrow/>
       </TouchableOpacity>
