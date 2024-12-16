@@ -62,68 +62,49 @@ const DeliveryItem = ({item, showBottomSheet}) => {
         colors={['#EADAC8', '#fff', '#FFF']}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        style={{
-          width: '100%',
-          paddingHorizontal: 10,
-          borderRadius: 5,
-          paddingVertical: 15,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <ColorBox width={40} height={40} />
-            <Text style={{color: '#000'}}>{item.idNumber}</Text>
-          </View>
+        style={styles.gradient}>
+        <View style={styles.itemTopRow}>
+          <ColorBox width={40} height={40} />
+          <Text style={styles.idNumber}>{item.idNumber}</Text>
           <TouchableOpacity style={styles.button} onPress={showBottomSheet}>
-            <Text style={{color: '#fff'}}>Deliver</Text>
+            <Text style={styles.btnText}>Deliver</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
-      <View
-        style={{
-          paddingVertical: 15,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <View style={{flexDirection: 'row', gap: 7, alignItems: 'center'}}>
-          <PhoneIcon width={15} height={15} />
-          <Text style={{color: '#000', fontSize: 12}}>+91 906 113 2363</Text>
-        </View>
+      <View style={styles.bottomRow}>
+        <PhoneIcon width={20} height={20} />
+        <Text style={styles.number}>+91 906 113 2363</Text>
         {!activeHide ? (
           <TouchableOpacity onPress={() => setActiveHide(!activeHide)}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
-              <Text style={{color: '#000', fontSize: 12}}>View details</Text>
-              <DownArrow width={10} height={10} />
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsText}>View details</Text>
+              <DownArrow width={12} height={12} />
             </View>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={() => setActiveHide(!activeHide)}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
-              <Text style={{color: '#007DDC', fontSize: 12}}>Hide details</Text>
-              <UpArrow width={10} height={10} />
+            <View style={styles.detailsRow}>
+              <Text style={[styles.detailsText, {color: '#007DDC'}]}>
+                Hide details
+              </Text>
+              <UpArrow width={12} height={12} />
             </View>
           </TouchableOpacity>
         )}
       </View>
       {activeHide && (
         <View style={styles.addressCover}>
-          <Text style={{color: '#717171', fontSize: 12}}>
-            Deliver address :
-          </Text>
-          <Text style={{color: '#474747', fontSize: 14, marginTop: 5}}>
-            Thalirath house thoppipala PO Swaraj Kattappana, Idukki Kerala,
-            685511
-          </Text>
-          <Text style={{color: '#717171', fontSize: 12, marginTop: 8}}>
-            Phone number :
-          </Text>
-          <Text style={{color: '#474747', fontSize: 14, marginTop: 5}}>
-            +91 9995819386
-          </Text>
+          <View>
+            <Text style={styles.addressLabel}>Deliver address :</Text>
+            <Text style={styles.addressText}>
+              Thalirath house thoppipala PO Swaraj Kattappana, Idukki Kerala,
+              685511
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.addressLabel}>Phone number :</Text>
+            <Text style={styles.addressText}>+91 9995819386</Text>
+          </View>
         </View>
       )}
     </View>
@@ -131,27 +112,31 @@ const DeliveryItem = ({item, showBottomSheet}) => {
 };
 
 const PendingScreen = ({showBottomSheet}) => (
-  <FlatList
-    data={DATA.filter(item => item.status === 'Returned')}
-    renderItem={({item}) => (
-      <DeliveryItem item={item} showBottomSheet={showBottomSheet} />
-    )}
-    keyExtractor={item => item.id}
-    contentContainerStyle={styles.listContent}
-    style={{backgroundColor: '#fff'}}
-  />
+  <View style={styles.listContainer}>
+    <FlatList
+      data={DATA.filter(item => item.status === 'Returned')}
+      renderItem={({item}) => (
+        <DeliveryItem item={item} showBottomSheet={showBottomSheet} />
+      )}
+      keyExtractor={item => item.id}
+      contentContainerStyle={styles.listContent}
+      style={{backgroundColor: '#fff'}}
+    />
+  </View>
 );
 
 const CompletedScreen = ({showBottomSheet}) => (
-  <FlatList
-    data={DATA.filter(item => item.status === 'Delivered')}
-    renderItem={({item}) => (
-      <DeliveryItem item={item} showBottomSheet={showBottomSheet} />
-    )}
-    keyExtractor={item => item.id}
-    contentContainerStyle={styles.listContent}
-    style={{backgroundColor: '#fff'}}
-  />
+  <View style={styles.listContainer}>
+    <FlatList
+      data={DATA.filter(item => item.status === 'Delivered')}
+      renderItem={({item}) => (
+        <DeliveryItem item={item} showBottomSheet={showBottomSheet} />
+      )}
+      keyExtractor={item => item.id}
+      contentContainerStyle={styles.listContent}
+      style={{backgroundColor: '#fff'}}
+    />
+  </View>
 );
 
 const DeliveryStack = () => {
@@ -185,7 +170,7 @@ const DeliveryStack = () => {
         </View>
         <View style={styles.mainContainer}>
           <View style={styles.dataContainer}>
-            <View style={{paddingTop: 20,}}>
+            <View style={{paddingTop: 20}}>
               <View style={styles.iconContainer}>
                 <BoxIcon width={25} height={25} />
               </View>
@@ -204,7 +189,12 @@ const DeliveryStack = () => {
       <View style={styles.bottomContainer}>
         <Tab.Navigator
           screenOptions={{
-            tabBarLabelStyle: {fontSize: 14},
+            tabBarLabelStyle: {
+              fontSize: 14,
+              fontWeight: 700,
+              color: '#6E7475',
+              textTransform: 'capitalize',
+            },
             tabBarIndicatorStyle: {backgroundColor: '#007DDC'},
             tabBarStyle: {elevation: 0},
           }}>
@@ -301,19 +291,24 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 1, // Added flex 1 to ensure it takes up the remaining height for tabs
-    marginTop: 87,
+    marginTop: 75,
     paddingHorizontal: 15,
     backgroundColor: '#fff',
   },
   itemContainer: {
-    // flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
     borderWidth: 1,
     borderColor: '#ddd',
-    // borderColor: '#eee',
     margin: 5,
     borderRadius: 5,
+    gap: 15,
+  },
+  gradient: {
+    width: '100%',
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    paddingVertical: 15,
   },
   itemLeft: {
     flexDirection: 'row',
@@ -353,18 +348,73 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontWeight: '500',
   },
+  listContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingVertical: 20,
+  },
   listContent: {
     paddingBottom: 20,
   },
+  itemTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  idNumber: {
+    color: '#474747',
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '500',
+  },
   button: {
     backgroundColor: '#007DDC',
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 5,
+    borderRadius: 4,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 12,
+  },
+  bottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  number: {
+    flex: 1,
+    color: '#474747',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  detailsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  detailsText: {
+    color: '#454545',
+    fontSize: 12,
+    fontWeight: '500',
   },
   addressCover: {
     backgroundColor: '#F6F6F6',
-    padding: 10,
-    borderRadius: 5,
+    padding: 16,
+    borderRadius: 4,
+    gap: 14,
+  },
+  addressLabel: {
+    color: '#717171',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  addressText: {
+    color: '#474747',
+    fontSize: 14,
+    fontWeight: '500',
+    marginTop: 5,
   },
 });
