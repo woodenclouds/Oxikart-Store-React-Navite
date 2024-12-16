@@ -37,20 +37,13 @@ const LoginScreen = ({navigation}) => {
           password: loginData.password,
         },
       );
-
+      console.log(response, 'login successful');
+      
       if (response.data.app_data.StatusCode === 6000) {
         saveItem('token', response?.data?.app_data.data.access_token);
         saveItem('role', response?.data?.app_data.data.roles[0]);
         saveItem('user_id', response?.data?.app_data.data.pk);
 
-        // dispatch(
-        //   setUserInfo({
-        //     isVerified: true,
-        //     token: response?.data?.app_data.data.access_token,
-        //     role: response?.data?.app_data.data.roles[0],
-        //     user_id: response?.data?.app_data.data.pk,
-        //   }),
-        // );
         dispatch(
           setUserInfo({
             isVerified: true,
@@ -60,7 +53,7 @@ const LoginScreen = ({navigation}) => {
           }),
         );
         // Navigate to Home screen after successful login
-        navigation.navigate('MainTab');
+        // navigation.navigate('MainTab');
       }
     } catch (error) {
       console.log(error);

@@ -66,11 +66,11 @@ const HomeScreen = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    axiosInstance.get('accounts/store-orders-list/').then(res => {
-      setOrders(res.data.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axiosInstance.get('accounts/store-orders-list/').then(res => {
+  //     setOrders(res.data.data);
+  //   });
+  // }, []);
 
   if (loading) {
     return <Loading />;
@@ -231,7 +231,7 @@ const HomeScreen = () => {
           <RightArrow />
         </TouchableOpacity>
       </View>
-      <FlatList
+      {/* <FlatList
         contentContainerStyle={{paddingHorizontal: 20, gap: 10}}
         data={orders}
         renderItem={({item}) => (
@@ -242,7 +242,7 @@ const HomeScreen = () => {
           />
         )}
         keyExtractor={item => item.id}
-      />
+      /> */}
       <BottomSheetModal
         isVisible={modalVisible}
         onClose={closeModal}

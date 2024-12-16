@@ -17,6 +17,9 @@ import DownArrow from '../assets/svg-icons/down-arrow.svg';
 import UpArrow from '../assets/svg-icons/up-arrow.svg';
 import ReusableBottomSheet from '../component/ReusableBottomSheet';
 import OtpModal from '../component/OtpModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setUserInfo} from '../redux/slices/userSlice';
+import {useDispatch} from 'react-redux';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -154,31 +157,47 @@ const CompletedScreen = ({showBottomSheet}) => (
 const DeliveryStack = () => {
   const bottomSheetRef = useRef(null);
 
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    AsyncStorage.clear()
+      .then(() => console.log('AsyncStorage cleared'))
+      .catch(e => console.log('AsyncStorage error: ', e));
+    dispatch(
+      setUserInfo({isVerified: false, token: '', role: '', user_id: null}),
+    );
+  };
+
   const showBottomSheet = () => {
     bottomSheetRef.current?.openSheet();
   };
   return (
     <View style={{flex: 1}}>
-      <StatusBar backgroundColor="#007DDC" />
+      <StatusBar backgroundColor="#007DDC" barStyle="light-content" />
       <LinearGradient colors={['#007DDC', '#004376']} style={styles.container}>
         <View style={styles.header}>
           <Logo width={130} height={40} />
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={() => handleLogout()}>
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.mainContainer}>
           <View style={styles.dataContainer}>
-            <LinearGradient
-              colors={['#007DDC', '#004376']}
-              style={styles.bottomLine}
-            />
-            <View>
+            <View style={{paddingTop: 20,}}>
               <View style={styles.iconContainer}>
-                <BoxIcon width={20} height={20} />
+                <BoxIcon width={25} height={25} />
               </View>
               <View style={styles.bottomData}>
                 <Text style={styles.text1}>Today’s deliveries :</Text>
                 <Text style={styles.text2}>40</Text>
               </View>
             </View>
+            <LinearGradient
+              colors={['#007DDC', '#004376']}
+              style={styles.bottomLine}
+            />
           </View>
         </View>
       </LinearGradient>
@@ -210,34 +229,49 @@ export default DeliveryStack;
 
 const styles = StyleSheet.create({
   container: {
-    height: 120,
+    height: 142,
     overflow: 'visible',
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingTop: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logoutButton: {
+    // paddingVertical: 12,
+    // alignItems: 'center',
+  },
+  logoutButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '500',
   },
   dataContainer: {
-    height: 120,
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    height: 138,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
     position: 'relative',
     paddingHorizontal: 15,
-    paddingVertical: 20,
+    justifyContent: 'space-between',
+    paddingBottom: 2,
+
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
   mainContainer: {
     paddingHorizontal: 15,
     position: 'absolute',
     width: '100%',
-    top: 50,
+    top: 70,
   },
   bottomLine: {
-    width: '90%',
+    width: '100%',
     height: 6,
-    bottom: 0,
-    position: 'absolute',
-    left: '9%',
-    right: 0,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -251,7 +285,7 @@ const styles = StyleSheet.create({
   },
   bottomData: {
     flexDirection: 'row',
-    paddingTop: 10,
+    paddingTop: 18,
     alignItems: 'center',
     gap: 10,
   },
@@ -267,7 +301,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 1, // Added flex 1 to ensure it takes up the remaining height for tabs
-    marginTop: 60,
+    marginTop: 87,
     paddingHorizontal: 15,
     backgroundColor: '#fff',
   },

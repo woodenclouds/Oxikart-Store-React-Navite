@@ -19,7 +19,9 @@ export const validateForm = (formData, validationSchema) => {
 
 export const saveItem = async (key, value) => {
   try {
-    await AsyncStorage.setItem(key, value);
+    if (value) {
+      await AsyncStorage.setItem(key, value);
+    }
     console.log('Item saved successfully!');
   } catch (error) {
     console.error('Error saving item:', error);

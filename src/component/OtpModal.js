@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,24 +8,27 @@ import {
 } from 'react-native';
 
 const OtpModal = () => {
-  const [otp, setOtp] = useState(['', '', '', '']); // State to store the OTP digits
+  const [otp, setOtp] = useState(['', '', '', '']);
+  const inputs = useRef([]);
 
   const handleChange = (text, index) => {
-    // Update the corresponding digit
     const newOtp = [...otp];
     newOtp[index] = text;
+    // Move to the next input if a digit is entered
+    if (text && index < 3) {
+      inputs.current[index + 1].focus();
+    }
     setOtp(newOtp);
+  };
 
-    // Automatically focus the next input if a digit is entered
-    if (text && index < otp.length - 1) {
-      const nextInput = inputs[index + 1];
-      if (nextInput) {
-        nextInput.focus();
+  const handleKeyPress = (event, index) => {
+    if (event.nativeEvent.key === 'Backspace' && otp[index] === '') {
+      // Move to the previous input if backspace is pressed and current input is empty
+      if (index > 0) {
+        inputs.current[index - 1].focus();
       }
     }
   };
-
-  const inputs = []; // To store input references for programmatically focusing
 
   return (
     <View style={styles.container}>
@@ -43,7 +46,8 @@ const OtpModal = () => {
             keyboardType="numeric"
             value={digit}
             onChangeText={text => handleChange(text, index)}
-            ref={input => (inputs[index] = input)}
+            onKeyPress={event => handleKeyPress(event, index)}
+            ref={ref => (inputs.current[index] = ref)} // Save references to inputs
           />
         ))}
       </View>
@@ -91,6 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     borderRadius: 5,
     marginHorizontal: 5,
+    color: '#000',
   },
   button: {
     backgroundColor: '#007DDC',

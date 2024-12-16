@@ -6,6 +6,8 @@ export const fetchDeliveryBoysAsync = createAsyncThunk(
   'deliveryBoys/fetchDeliveryBoys',
   async () => {
     const response = await fetchDeliveryBoys(); // Replace with your API logic
+    console.log(response, "Delivery boys details");
+    
     return response.data;
   }
 );

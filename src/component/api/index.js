@@ -26,6 +26,8 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   response => {
+    console.log(response, 'response');
+    
     // Check if response is HTML, indicating a permission error
     if (
       typeof response.data === 'string' &&

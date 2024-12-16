@@ -9,7 +9,6 @@ import {
 import React, {useState} from 'react';
 import AddProfile from '../../assets/svg-icons/AddProfile';
 import {BoyImage} from '../../assets/images';
-import Tooltip from '../../component/Tooltip';
 import {icons} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -20,7 +19,7 @@ const BoyCard = ({item}) => {
 
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const navigation = useNavigation();
-
+  
   const handleDelete = async () => {
     try {
       const response = await axiosInstance.post(`accounts/delete-delivery-boys/${item.id}/`);

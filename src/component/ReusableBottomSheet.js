@@ -32,7 +32,7 @@ const ReusableBottomSheet = forwardRef(({content, height}, ref) => {
           <BlurView
             style={styles.absolute}
             blurType="dark"
-            blurAmount={10}
+            blurAmount={1}
             reducedTransparencyFallbackColor="white"
           />
         </View>
