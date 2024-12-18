@@ -37,7 +37,6 @@ const LoginScreen = ({navigation}) => {
           password: loginData.password,
         },
       );
-      console.log(response, 'login successful');
       
       if (response.data.app_data.StatusCode === 6000) {
         saveItem('token', response?.data?.app_data.data.access_token);

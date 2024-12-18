@@ -28,6 +28,8 @@ import RightArrow from './rightArrow';
 import TimeIcon from './TimeIcon';
 import UserIcon from './Users.svg';
 import DownArrrow from './down-arrow.svg';
+import UpArrow from "./up-arrow.svg";
+import PhoneIcon from "./phone-icon.svg";
 
 export {
   Account,
@@ -60,4 +62,6 @@ export {
   WishlistIcon,
   UserIcon,
   DownArrrow,
+  UpArrow,
+  PhoneIcon
 };

@@ -5,9 +5,7 @@ import { fetchDeliveryBoys } from '../../services/orderService';
 export const fetchDeliveryBoysAsync = createAsyncThunk(
   'deliveryBoys/fetchDeliveryBoys',
   async () => {
-    const response = await fetchDeliveryBoys(); // Replace with your API logic
-    console.log(response, "Delivery boys details");
-    
+    const response = await fetchDeliveryBoys(); // Replace with your API logic 
     return response.data;
   }
 );

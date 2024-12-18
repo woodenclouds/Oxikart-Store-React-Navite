@@ -17,6 +17,7 @@ import TitleHeader from '../../component/TitleHeader';
 import CustomButton from '../../component/CustomButton';
 import Dropdown from '../../utils/components/Dropdown';
 import { useSelector } from 'react-redux';
+import Loading from '../../component/Loading';
 
 const ReturnScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -26,6 +27,7 @@ const ReturnScreen = () => {
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const { deliveryBoys } = useSelector((state) => state.deliveryBoys);
   
@@ -47,6 +49,7 @@ const ReturnScreen = () => {
         console.error(error);
       } finally {
         setRefresh(false);
+        setLoading(false);
       }
     };
     fetchReturnOrders();
@@ -54,6 +57,12 @@ const ReturnScreen = () => {
 
   const handleSubmit = async () => {};
 
+  if (loading) {
+    return (
+      <Loading />
+    )
+  }
+  
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />

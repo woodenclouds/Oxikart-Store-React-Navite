@@ -22,7 +22,6 @@ const App = () => {
       <Provider store={store}>
         <NavigationContainer>
           <SafeAreaView style={ styles.container }>
-            <StatusBar barStyle="dark-content" backgroundColor="#fff" />
             <AppNavigator />
           </SafeAreaView>
         </NavigationContainer>

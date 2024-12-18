@@ -11,26 +11,33 @@ import BoyCard from './BoyCard';
 import AddProfile from '../../assets/svg-icons/AddProfile';
 import {useNavigation} from '@react-navigation/native';
 import {fetchDeliveryBoys} from '../../services/orderService';
+import Loading from '../../component/Loading';
 
 const DeliveryBoyScreen = () => {
   const [deliveryBoys, setDeliveryBoys] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetchDeliveryBoys();   
+        const res = await fetchDeliveryBoys();
         setDeliveryBoys(res.data);
       } catch (error) {
         console.error('Error fetching delivery boys:', error);
       } finally {
         setRefresh(false);
+        setLoading(false);
       }
     };
     fetchData();
   }, [refresh]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <View style={styles.container}>
@@ -47,12 +54,7 @@ const DeliveryBoyScreen = () => {
       <View style={{paddingHorizontal: 20}}>
         <FlatList
           data={deliveryBoys}
-          renderItem={({item}) => (
-            <BoyCard
-              key={item.id}
-              item={item}
-            />
-          )}
+          renderItem={({item}) => <BoyCard key={item.id} item={item} />}
           style={{paddingVertical: 20}}
           contentContainerStyle={{paddingBottom: 100}}
           onRefresh={() => {

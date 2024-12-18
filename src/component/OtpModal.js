@@ -51,7 +51,7 @@ const OtpModal = () => {
           />
         ))}
       </View>
-      <View style={{width: '100%', paddingHorizontal: 15, paddingBottom: 20}}>
+      <View style={{width: '100%', paddingBottom: 20}}>
         <TouchableOpacity style={styles.button}>
           <Text style={{color: '#fff'}}>Verify OTP</Text>
         </TouchableOpacity>
@@ -73,21 +73,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitle: {
-    color: '#5A5A5A',
+    color: '#6E7475',
     fontSize: 14,
     textAlign: 'center',
     width: '80%',
+    marginTop: 10,
     marginBottom: 20,
+    lineHeight: 20,
   },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
+    width: '100%',
     marginTop: 20,
     paddingBottom: 50,
   },
   otpInput: {
-    width: 50,
+    width: 70,
     height: 50,
     borderWidth: 1,
     borderColor: '#ddd',
@@ -100,9 +102,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#007DDC',
     width: '100%',
-    paddingVertical: 10,
+    paddingVertical: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 3,
+    borderRadius: 4,
   },
 });
