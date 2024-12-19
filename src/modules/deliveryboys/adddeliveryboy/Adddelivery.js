@@ -96,8 +96,8 @@ const Adddelivery = () => {
           type: response.assets[0].type,
           name: response.assets[0].fileName,
         };
-        const binaryData = await RNFS.readFile(imageFile.uri, 'base64');
-        setFormData(prev => ({...prev, image: binaryData}));
+        // const binaryData = await RNFS.readFile(imageFile.uri, 'base64');
+        setFormData(prev => ({...prev, image: response.assets[0].uri}));
         setImage(source);
       }
     });

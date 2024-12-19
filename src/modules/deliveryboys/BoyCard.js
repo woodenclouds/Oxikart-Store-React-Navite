@@ -36,9 +36,10 @@ const BoyCard = ({item}) => {
   const handleOpenTooltip = () => {
     setTooltipVisible(!tooltipVisible);
   };
+  
   return (
     <View style={styles.container}>
-      <Image source={BoyImage} style={styles.imageStyle} />
+      <Image source={item.image ? item.image : BoyImage} style={styles.imageStyle} />
       <View style={styles.nameContainer}>
         <Text style={styles.name}>{item?.full_name}</Text>
         <Text style={styles.deliveryBoyId}>ID : {item.delivery_boy_id}</Text>
