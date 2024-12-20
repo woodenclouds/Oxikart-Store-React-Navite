@@ -19,10 +19,12 @@ const BoyCard = ({item}) => {
 
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const navigation = useNavigation();
-  
+
   const handleDelete = async () => {
     try {
-      const response = await axiosInstance.post(`accounts/delete-delivery-boys/${item.id}/`);
+      const response = await axiosInstance.post(
+        `accounts/delete-delivery-boys/${item.id}/`,
+      );
       if (response.StatusCode === 6000) {
         console.log(response.data.message);
         setShowModal(false);
@@ -36,10 +38,15 @@ const BoyCard = ({item}) => {
   const handleOpenTooltip = () => {
     setTooltipVisible(!tooltipVisible);
   };
-  
+
   return (
-    <View style={styles.container}>
-      <Image source={item.image ? item.image : BoyImage} style={styles.imageStyle} />
+    <TouchableOpacity
+      onPress={() => navigation.navigate('DBDetails', {id: item.id})}
+      style={styles.container}>
+      <Image
+        source={item.image ? item.image : BoyImage}
+        style={styles.imageStyle}
+      />
       <View style={styles.nameContainer}>
         <Text style={styles.name}>{item?.full_name}</Text>
         <Text style={styles.deliveryBoyId}>ID : {item.delivery_boy_id}</Text>
@@ -51,9 +58,7 @@ const BoyCard = ({item}) => {
         <View style={styles.tooltipContainer}>
           <TouchableOpacity
             style={styles.toolButton}
-            onPress={() =>
-              navigation.navigate('Edit deliveryboy', {id: item.id})
-            }>
+            onPress={() => navigation.navigate('AddDelivery')}>
             <Image source={icons.edit} />
             <Text style={styles.tooltipText}>Edit</Text>
           </TouchableOpacity>
@@ -97,7 +102,7 @@ const BoyCard = ({item}) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -51,16 +51,18 @@ const DeliveryBoyScreen = () => {
           <Text style={styles.addText}>Add delivery boy</Text>
         </TouchableOpacity>
       </View>
-      <View style={{paddingHorizontal: 20}}>
+      <View style={styles.dbContainer}>
         <FlatList
           data={deliveryBoys}
           renderItem={({item}) => <BoyCard key={item.id} item={item} />}
-          style={{paddingVertical: 20}}
           contentContainerStyle={{paddingBottom: 100}}
           onRefresh={() => {
             setRefresh(!refresh);
           }}
           refreshing={refresh}
+          ListEmptyComponent={
+            <Text style={styles.headerText}>No delivery boys found</Text>
+          }
         />
       </View>
     </View>
@@ -95,5 +97,9 @@ const styles = StyleSheet.create({
   addText: {
     fontSize: 14,
     color: '#141414',
+  },
+  dbContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
 });
