@@ -8,12 +8,10 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-
 import CameraIcon from '../../assets/svg-icons/CameraIcon';
 import {InputLabel} from '../../component/inputs';
 import {launchImageLibrary} from 'react-native-image-picker';
 import DatePickerModal from '../../component/DatePickerModal';
-
 import axiosInstance from '../../component/api';
 import useGetapi from '../../hooks/useGetapi';
 import Dropdown from '../../component/inputs/DropDown';
@@ -67,8 +65,8 @@ const DbForm = ({handleSubmit, errors, profile}) => {
   const ImagePicker = async () => {
     let options = {
       storageOptions: {
-        path: 'image',
         mediaType: 'photo',
+        path: 'image',
       },
     };
     launchImageLibrary(options, async response => {
@@ -77,15 +75,7 @@ const DbForm = ({handleSubmit, errors, profile}) => {
       } else if (response.errorMessage) {
         console.log('ImagePicker Error: ', response.errorMessage);
       } else {
-        const source = {uri: response.assets[0].uri};
-        const imageFile = {
-          uri: response.assets[0].uri,
-          type: response.assets[0].type,
-          name: response.assets[0].fileName,
-        };
-        // const binaryData = await RNFS.readFile(imageFile.uri, 'base64');
         setFormData(prev => ({...prev, image: response.assets[0].uri}));
-        setImage(source);
       }
     });
   };
@@ -96,8 +86,8 @@ const DbForm = ({handleSubmit, errors, profile}) => {
         <View style={styles.imageContainer}>
           <View style={styles.circle}>
             <View style={styles.inCircle}>
-              {image ? (
-                <Image source={image} style={styles.image} />
+              {formData.image ? (
+                <Image source={{uri: formData.image}} style={styles.image} />
               ) : (
                 <UserIcon />
               )}

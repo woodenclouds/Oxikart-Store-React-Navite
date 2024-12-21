@@ -24,10 +24,31 @@ const Adddelivery = () => {
       setModalMessage('Please fix the errors in the form');
       setModalVisible(true);
     } else {
+      const data = new FormData();
+      // adding form data to the FormData object
+      Object.keys(formData).forEach(key => {
+        if (key === 'image') {
+          const fileName = formData.image.split('/').pop();
+          data.append('image', {
+            uri: formData.image,
+            type: 'image/jpeg',
+            name: fileName,
+          });
+        } else if (key === 'dob' || key === 'joining') {
+          data.append(key, formData[key].toISOString()); // ISO 8601 format
+        } else {
+          data.append(key, formData[key]);
+        }
+      });
       try {
         const response = await axiosInstance.post(
           'accounts/create-delivery-boy/',
-          formData,
+          data,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
         );
 
         if (response.StatusCode === 6000) {

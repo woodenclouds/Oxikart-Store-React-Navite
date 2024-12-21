@@ -53,7 +53,7 @@ const BoyCard = ({item}) => {
       onPress={() => navigation.navigate('DBDetails', {id: item.id})}
       style={styles.container}>
       <Image
-        source={item.image ? item.image : BoyImage}
+        source={item.image ? {uri: item.image} : BoyImage}
         style={styles.imageStyle}
       />
       <View style={styles.nameContainer}>
