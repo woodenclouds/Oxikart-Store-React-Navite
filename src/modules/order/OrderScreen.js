@@ -17,7 +17,7 @@ import Dropdown from '../../utils/components/Dropdown';
 import {assignOrder} from '../../services/orderService';
 import TitleHeader from '../../component/TitleHeader';
 import CustomButton from '../../component/CustomButton';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const OrderScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -28,7 +28,7 @@ const OrderScreen = () => {
   const [assignedOrders, setAssignedOrder] = useState([]);
   const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
 
-  const { deliveryBoys } = useSelector((state) => state.deliveryBoys);
+  const {deliveryBoys} = useSelector(state => state.deliveryBoys);
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -70,11 +70,12 @@ const OrderScreen = () => {
       console.error('Error assigning order:', error);
     }
   };
+  console.log(assignedOrders, 'assignedOrders');
 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      <TitleHeader title="Orders"/>
+      <TitleHeader title="Orders" />
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={[styles.tab, active === 'Pending' && styles.activeTab]}
@@ -131,6 +132,11 @@ const OrderScreen = () => {
             keyExtractor={item => item.id}
             refreshing={refresh}
             onRefresh={() => setRefresh(!refresh)}
+            ListEmptyComponent={
+              <View style={{alignItems: 'center', marginTop: 20}}>
+                <Text style={{color: '#000'}}>No assigned orders found</Text>
+              </View>
+            }
           />
         )}
       </View>
@@ -159,7 +165,7 @@ const OrderScreen = () => {
             />
           </View>
         </View>
-        <CustomButton title="Confirm" onPress={handleSubmit}/>
+        <CustomButton title="Confirm" onPress={handleSubmit} />
       </BottomSheetModal>
     </View>
   );
@@ -169,11 +175,11 @@ export default OrderScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    backgroundColor: '#FFFFFF'
+    flex: 1,
+    backgroundColor: '#FFFFFF',
   },
   tabContainer: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     paddingHorizontal: 20,
     paddingTop: 10,
   },
@@ -184,19 +190,19 @@ const styles = StyleSheet.create({
     height: 40,
   },
   activeTab: {
-    borderBottomWidth: 2, 
-    borderBottomColor: '#4A4D4E'
+    borderBottomWidth: 2,
+    borderBottomColor: '#4A4D4E',
   },
   tabText: {
-    color: '#6E7475', 
-    fontSize: 14
+    color: '#6E7475',
+    fontSize: 14,
   },
   activeTabText: {
-    color: '#4A4D4E'
+    color: '#4A4D4E',
   },
   content: {
-    paddingHorizontal: 20, 
-    paddingVertical: 20
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -215,14 +221,14 @@ const styles = StyleSheet.create({
     color: '#474747',
   },
   modalContainer: {
-    paddingHorizontal: 20, 
-    paddingTop: 25, 
+    paddingHorizontal: 20,
+    paddingTop: 25,
     paddingBottom: 30,
     gap: 8,
   },
   modalLabel: {
     marginBottom: 8,
-    color: "#747474",
+    color: '#747474',
   },
   modalInput: {
     borderWidth: 1,
@@ -230,9 +236,9 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 16,
     borderRadius: 5,
-    color: "#C3C3C3"
+    color: '#C3C3C3',
   },
   dropdownContainer: {
-    marginTop: 10
+    marginTop: 10,
   },
 });

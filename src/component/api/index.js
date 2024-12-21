@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
     //   );
     //   return Promise.reject(new Error('Permission Denied'));
     // }
-    // console.log(`API Endpoint: ${response.config.url}`, response);
+    console.log(`API Endpoint: ${response.config.url}`, response);
     
     const appData = response?.data?.app_data;
     return appData;

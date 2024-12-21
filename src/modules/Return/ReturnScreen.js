@@ -16,7 +16,7 @@ import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import TitleHeader from '../../component/TitleHeader';
 import CustomButton from '../../component/CustomButton';
 import Dropdown from '../../utils/components/Dropdown';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import Loading from '../../component/Loading';
 
 const ReturnScreen = () => {
@@ -29,8 +29,8 @@ const ReturnScreen = () => {
   const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { deliveryBoys } = useSelector((state) => state.deliveryBoys);
-  
+  const {deliveryBoys} = useSelector(state => state.deliveryBoys);
+
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
@@ -58,11 +58,9 @@ const ReturnScreen = () => {
   const handleSubmit = async () => {};
 
   if (loading) {
-    return (
-      <Loading />
-    )
+    return <Loading />;
   }
-  
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
@@ -122,6 +120,11 @@ const ReturnScreen = () => {
             keyExtractor={item => item.id}
             refreshing={refresh}
             onRefresh={() => setRefresh(!refresh)}
+            ListEmptyComponent={
+              <View style={{alignItems: 'center', marginTop: 20}}>
+                <Text style={{color: '#000'}}>No return orders found</Text>
+              </View>
+            }
           />
         ) : (
           // <FlatList
@@ -139,7 +142,7 @@ const ReturnScreen = () => {
         onClose={closeModal}
         title="Confirm & assign">
         <View style={styles.modalContainer}>
-          <View style={{flexDirection: "row"}}> 
+          <View style={{flexDirection: 'row'}}>
             <Text style={styles.modalLabel}>Order ID :</Text>
             <Text style={styles.modalInput}>{selectedOrder?.purchase}</Text>
           </View>
@@ -153,7 +156,7 @@ const ReturnScreen = () => {
             />
           </View>
         </View>
-        <CustomButton title="Confirm" onPress={handleSubmit}/>
+        <CustomButton title="Confirm" onPress={handleSubmit} />
       </BottomSheetModal>
     </View>
   );
@@ -196,21 +199,21 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   modalContainer: {
-    paddingHorizontal: 20, 
-    paddingTop: 25, 
+    paddingHorizontal: 20,
+    paddingTop: 25,
     paddingBottom: 30,
     gap: 8,
   },
   modalLabel: {
     marginBottom: 8,
-    color: "#747474",
+    color: '#747474',
   },
   modalInput: {
-    color: "#474747",
+    color: '#474747',
     fontSize: 14,
     marginLeft: 10,
   },
   dropdownContainer: {
-    marginTop: 10
+    marginTop: 10,
   },
 });

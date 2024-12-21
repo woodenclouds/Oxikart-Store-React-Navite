@@ -39,7 +39,7 @@ const DBDetailsScreen = ({route}) => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.profileContainer}>
           <Image
-            source={{uri: 'https://via.placeholder.com/150'}}
+            source={{uri: profile.image ? profile.image : 'https://via.placeholder.com/150'}}
             style={styles.profileImage}
           />
           <View style={{width: '60%'}}>
