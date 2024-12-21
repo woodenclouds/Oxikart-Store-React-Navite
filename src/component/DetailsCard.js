@@ -16,8 +16,6 @@ export default DetailsCard;
 
 const styles = StyleSheet.create({
   detailItem: {
-    marginBottom: 15,
-    // width: '100%',
     flex: 1,
   },
   label: {

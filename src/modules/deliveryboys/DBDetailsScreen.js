@@ -24,12 +24,10 @@ const DBDetailsScreen = ({route}) => {
     });
   }, [id]);
 
-  console.log(profile);
-
   const right = () => (
     <TouchableOpacity
       style={styles.editContainer}
-      onPress={() => navigation.navigate('AddDelivery')}>
+      onPress={() => navigation.navigate('EditDeliveryBoy', {profile})}>
       <Image source={icons.edit} />
       <Text style={{color: '#000'}}>Edit</Text>
     </TouchableOpacity>
@@ -58,7 +56,7 @@ const DBDetailsScreen = ({route}) => {
           <DetailsCard label="DOB" value={formatDateString(profile.dob)} />
           <DetailsCard label="State" value={profile?.state?.name} />
           <DetailsCard label="Country" value={profile?.country?.name} />
-          <DetailsCard label="Joining" value={profile.joining} />
+          <DetailsCard label="Joining" value={formatDateString(profile.joining)} />
           <DetailsCard label="Address" value={profile.address} />
           <DetailsCard label="Password" value={profile.password} />
         </View>
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     flexDirection: 'row',
-    gap: 20,
+    gap: 18,
     paddingBottom: 30,
     borderBottomColor: '#EEEEEE',
     borderBottomWidth: 1,
@@ -95,6 +93,8 @@ const styles = StyleSheet.create({
     width: 85,
     height: 85,
     borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#007DDC',
   },
   name: {
     fontSize: 18,
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     marginBottom: 20,
+    gap: 16,
   },
   detailItem: {
     marginBottom: 15,

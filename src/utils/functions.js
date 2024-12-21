@@ -49,5 +49,5 @@ export const formatDateString = dateString => {
   const month = date.toLocaleString('default', {month: 'long'});
   const year = date.getFullYear();
 
-  return `${day}, ${month} ${year}`;
+  return `${day} ${month}, ${year}`;
 };

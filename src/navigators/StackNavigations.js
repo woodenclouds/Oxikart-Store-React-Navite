@@ -25,7 +25,7 @@ const AppStack = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Edit deliveryboy"
+        name="EditDeliveryBoy"
         component={EditScreen}
         options={{headerShown: false}}
       />

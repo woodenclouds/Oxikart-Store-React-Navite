@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AddProfile from '../../assets/svg-icons/AddProfile';
 import {BoyImage} from '../../assets/images';
 import {icons} from '../../assets/icons';
@@ -16,6 +16,7 @@ import axiosInstance from '../../component/api';
 
 const BoyCard = ({item}) => {
   const [showModal, setShowModal] = useState(false);
+  const [profile, setProfile] = useState({});
 
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const navigation = useNavigation();
@@ -34,6 +35,14 @@ const BoyCard = ({item}) => {
       console.error('Error deleting delivery boy:', error);
     }
   };
+
+  useEffect(() => {
+    axiosInstance
+      .get(`accounts/delivery-boy-single-view/${item.id}/`)
+      .then(res => {
+        setProfile(res.data.data);
+      });
+  }, [item.id]);
 
   const handleOpenTooltip = () => {
     setTooltipVisible(!tooltipVisible);
@@ -58,7 +67,7 @@ const BoyCard = ({item}) => {
         <View style={styles.tooltipContainer}>
           <TouchableOpacity
             style={styles.toolButton}
-            onPress={() => navigation.navigate('AddDelivery')}>
+            onPress={() => navigation.navigate('EditDeliveryBoy', {profile})}>
             <Image source={icons.edit} />
             <Text style={styles.tooltipText}>Edit</Text>
           </TouchableOpacity>
