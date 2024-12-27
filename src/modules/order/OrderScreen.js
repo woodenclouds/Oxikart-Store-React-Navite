@@ -61,6 +61,8 @@ const OrderScreen = () => {
         selectedOrder?.purchase_id,
         selectedDeliveryBoy.id,
       );
+      console.log(res, 'success');
+      
       if (res.StatusCode === 6000) {
         setModalVisible(false);
       } else {
@@ -70,7 +72,6 @@ const OrderScreen = () => {
       console.error('Error assigning order:', error);
     }
   };
-  console.log(assignedOrders, 'assignedOrders');
 
   return (
     <View style={styles.container}>

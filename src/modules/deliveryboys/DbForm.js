@@ -22,7 +22,7 @@ const DbForm = ({handleSubmit, errors, profile}) => {
     full_name: profile?.full_name || '',
     phone: profile?.phone || '',
     gender: profile?.gender || '',
-    image: '',
+    image: profile?.image || '',
     age: profile?.age || '',
     dob: profile?.dob ? new Date(profile?.dob) : new Date(),
     state: profile?.state?.id || null,
@@ -37,8 +37,6 @@ const DbForm = ({handleSubmit, errors, profile}) => {
 
   const [openDOB, setOpenDOB] = useState(false);
   const [openJoiningDate, setOpenJoiningDate] = useState(false);
-
-  const [image, setImage] = useState();
 
   const {data} = useGetapi('general/list-country/');
 
@@ -366,7 +364,7 @@ const styles = StyleSheet.create({
     width: 98,
     height: 98,
     borderRadius: 50,
-    resizeMode: 'center',
+    resizeMode: 'contain',
   },
   imagePicker: {
     padding: 5,

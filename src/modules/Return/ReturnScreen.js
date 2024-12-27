@@ -22,6 +22,7 @@ import Loading from '../../component/Loading';
 const ReturnScreen = () => {
   const [active, setActive] = useState('Pending');
   const [returnOrders, setReturnOrders] = useState([]);
+  const [returnedOrders, setReturnedOrders] = useState([]);
 
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [refresh, setRefresh] = useState(false);
@@ -41,10 +42,14 @@ const ReturnScreen = () => {
   useEffect(() => {
     const fetchReturnOrders = async () => {
       try {
-        const response = await axiosInstance.get(
-          '/accounts/list-return-assign-orders/',
-        );
-        setReturnOrders(response.data.data);
+        const endpoint =
+          active === 'Pending'
+            ? 'accounts/list-return-assign-orders/'
+            : 'accounts/view-return-request-orders/';
+        const response = await axiosInstance.get(endpoint);
+        active === 'Pending'
+          ? setReturnOrders(response.data.data)
+          : setReturnedOrders(response.data.data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -55,7 +60,23 @@ const ReturnScreen = () => {
     fetchReturnOrders();
   }, [refresh, active]);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    try {
+      const res = await axiosInstance.post('accounts/assign-return-orders/', {
+        purchase_id: selectedOrder.purchase_id,
+        pickup_boy: selectedDeliveryBoy.id,
+      });
+      console.log(res, 'success');
+
+      if (res.StatusCode === 6000) {
+        setModalVisible(false);
+      } else {
+        console.log('Unexpected StatusCode:', res.StatusCode);
+      }
+    } catch (error) {
+      console.error('Error assigning order:', error);
+    }
+  };
 
   if (loading) {
     return <Loading />;
@@ -127,14 +148,19 @@ const ReturnScreen = () => {
             }
           />
         ) : (
-          // <FlatList
-          //   data={assignedOrders}
-          //   renderItem={({item}) => <AssignedCard item={item} />}
-          //   keyExtractor={item => item.id}
-          //   refreshing={refresh}
-          //   onRefresh={() => setRefresh(!refresh)}
-          // />
-          <ReturnCard />
+          <FlatList
+            data={returnedOrders}
+            renderItem={({item}) => <ReturnCard item={item} />}
+            keyExtractor={item => item.id}
+            refreshing={refresh}
+            onRefresh={() => setRefresh(!refresh)}
+            ListEmptyComponent={
+              <View style={{alignItems: 'center', marginTop: 20}}>
+                <Text style={{color: '#000'}}>No returned orders found</Text>
+              </View>
+            }
+          />
+          // <ReturnCard />
         )}
       </View>
       <BottomSheetModal
