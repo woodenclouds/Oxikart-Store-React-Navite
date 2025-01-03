@@ -13,8 +13,14 @@ import Header from '../../component/Header';
 import {useNavigation} from '@react-navigation/native';
 import {icons} from '../../assets/icons';
 import {formatDateString} from '../../utils/functions';
+import useGetapi from '../../hooks/useGetapi';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import PersonalDetails from './PersonalDetails';
+import DeliveryHistory from './DeliveryHistory';
 
-const DBDetailsScreen = ({route}) => {
+const Tab = createMaterialTopTabNavigator();
+
+const DeliveryBoySingle = ({route}) => {
   const [profile, setProfile] = useState({});
   const navigation = useNavigation();
   const {id} = route.params;
@@ -36,10 +42,14 @@ const DBDetailsScreen = ({route}) => {
   return (
     <View style={styles.container}>
       <Header title={profile.full_name} right={right} />
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      {/* <View style={styles.contentContainer}> */}
         <View style={styles.profileContainer}>
           <Image
-            source={{uri: profile.image ? profile.image : 'https://via.placeholder.com/150'}}
+            source={{
+              uri: profile.image
+                ? profile.image
+                : 'https://via.placeholder.com/150',
+            }}
             style={styles.profileImage}
           />
           <View style={{width: '60%'}}>
@@ -47,25 +57,33 @@ const DBDetailsScreen = ({route}) => {
             <Text style={styles.id}>ID : {profile.id}</Text>
           </View>
         </View>
-        <View style={styles.detailsContainer}>
-          <DetailsCard label="Phone number" value={profile.phone} />
-          <View style={{flexDirection: 'row', gap: 16,}}>
-            <DetailsCard label="Gender" value={profile.gender} />
-            <DetailsCard label="Age" value={profile.age} />
-          </View>
-          <DetailsCard label="DOB" value={formatDateString(profile.dob)} />
-          <DetailsCard label="State" value={profile?.state?.name} />
-          <DetailsCard label="Country" value={profile?.country?.name} />
-          <DetailsCard label="Joining" value={formatDateString(profile.joining)} />
-          <DetailsCard label="Address" value={profile.address} />
-          <DetailsCard label="Password" value={profile.password} />
+
+        <View style={styles.bottomContainer}>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarLabelStyle: {
+                fontSize: 14,
+                fontWeight: 500,
+                color: '#4A4D4E',
+                textTransform: 'capitalize',
+              },
+              tabBarIndicatorStyle: {backgroundColor: '#666666'},
+              tabBarStyle: {elevation: 0},
+            }}>
+            <Tab.Screen name="Personal Details">
+              {() => <PersonalDetails profile={profile}/>}
+            </Tab.Screen>
+            <Tab.Screen name="Delivery History">
+              {() => <DeliveryHistory DeliveryBoyId={id}/>}
+            </Tab.Screen>
+          </Tab.Navigator>
         </View>
-      </ScrollView>
+      {/* </View> */}
     </View>
   );
 };
 
-export default DBDetailsScreen;
+export default DeliveryBoySingle;
 
 const styles = StyleSheet.create({
   container: {
@@ -78,16 +96,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentContainer: {
+    flex: 1,
     padding: 20,
   },
   profileContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
     flexDirection: 'row',
-    gap: 18,
-    paddingBottom: 30,
+    alignItems: 'center',
+    marginBottom: 10,
+    paddingVertical: 32,
+    paddingHorizontal: 20,
     borderBottomColor: '#EEEEEE',
     borderBottomWidth: 1,
+    gap: 18,
   },
   profileImage: {
     width: 85,
@@ -142,5 +162,10 @@ const styles = StyleSheet.create({
   editText: {
     fontSize: 16,
     color: '#007BFF',
+  },
+  bottomContainer: {
+    flex: 1, // Added flex 1 to ensure it takes up the remaining height for tabs
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 20,
   },
 });

@@ -56,7 +56,7 @@ const HomeScreen = () => {
       setLoading(true);
       try {
         const response = await axiosInstance.get('accounts/store-home-count/');
-        setHomeCount(response.data.data);
+        setHomeCount(response?.data?.data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -132,7 +132,7 @@ const HomeScreen = () => {
                 paddingHorizontal: 20,
               }}>
               <Text style={{fontSize: 28, color: '#000'}}>
-                {homeCount.purchase_count}
+                {homeCount?.purchase_count}
               </Text>
               <Text style={{color: '#565656', fontSize: 14}}>Total orders</Text>
             </View>
@@ -168,7 +168,7 @@ const HomeScreen = () => {
                 paddingHorizontal: 20,
               }}>
               <Text style={{fontSize: 28, color: '#000'}}>
-                {homeCount.pending_count}
+                {homeCount?.pending_count}
               </Text>
               <Text style={{color: '#565656', fontSize: 14}}>
                 Pending orders
@@ -201,12 +201,12 @@ const HomeScreen = () => {
         <HomeCard
           icon={<ProfileSvg />}
           title="Total delivery boys"
-          number={homeCount.delivery_boys_count}
+          number={homeCount?.delivery_boys_count}
         />
         <HomeCard
           icon={<DeliveryIcon />}
           title="Pending Returns"
-          number={homeCount.pending_return_count}
+          number={homeCount?.pending_return_count}
         />
       </View>
       <View

@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -35,16 +36,18 @@ const OrderScreen = () => {
 
   const handleTabSwitch = tab => setActive(tab);
 
+  const {user_id} = useSelector(state => state.user);
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const endpoint =
           active === 'Pending'
-            ? 'accounts/store-orders-list/'
+            ? `accounts/store-orders-list/?store_pk=${user_id}`
             : 'accounts/view-assigned-orders/';
         const res = await axiosInstance.get(endpoint);
         active === 'Pending'
-          ? setOrders(res.data.data)
+          ? setOrders(res?.data?.data)
           : setAssignedOrder(res.data.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
@@ -65,6 +68,7 @@ const OrderScreen = () => {
       
       if (res.StatusCode === 6000) {
         setModalVisible(false);
+        ToastAndroid.show('Assigned successfully', ToastAndroid.SHORT);
       } else {
         console.log('Unexpected StatusCode:', res.StatusCode);
       }
@@ -125,6 +129,11 @@ const OrderScreen = () => {
             keyExtractor={item => item.id}
             refreshing={refresh}
             onRefresh={() => setRefresh(!refresh)}
+            ListEmptyComponent={
+              <View style={{alignItems: 'center', marginTop: 20}}>
+                <Text style={{color: '#000'}}>No orders found</Text>
+              </View>
+            }
           />
         ) : (
           <FlatList

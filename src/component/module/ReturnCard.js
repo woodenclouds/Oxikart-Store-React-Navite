@@ -6,8 +6,6 @@ import ProfileIcon from '../../assets/svg-icons/ProfileIcon';
 import UpArrow from '../../assets/svg-icons/UpArrow';
 
 const ReturnCard = ({item}) => {
-  console.log(item, 'ReturnCard');
-  
   const [open, setOpen] = useState(false);
   return (
     <View style={styles.container}>

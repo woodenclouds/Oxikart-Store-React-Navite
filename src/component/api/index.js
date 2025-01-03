@@ -5,6 +5,7 @@ import {getItem} from '../../utils/functions';
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.oxikart.in/api/v1/',
+  timeout: 20000,
 });
 
 // Request interceptor

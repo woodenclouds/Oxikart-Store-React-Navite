@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -19,6 +20,7 @@ import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {setUserInfo} from '../../redux/slices/userSlice';
+import axiosInstance from '../../component/api';
 
 const LoginScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -30,29 +32,31 @@ const LoginScreen = ({navigation}) => {
 
   const loginUser = async () => {
     try {
-      const response = await axios.post(
-        'https://api.oxikart.in/api/v1/accounts/login/',
+      const response = await axiosInstance.post(
+        'accounts/login/',
         {
           email: loginData.username,
           password: loginData.password,
         },
       );
       
-      if (response.data.app_data.StatusCode === 6000) {
-        saveItem('token', response?.data?.app_data.data.access_token);
-        saveItem('role', response?.data?.app_data.data.roles[0]);
-        saveItem('user_id', response?.data?.app_data.data.pk);
+      if (response?.StatusCode === 6000) {
+        saveItem('token', response?.data.access_token);
+        saveItem('role', response?.data.roles[0]);
+        saveItem('user_id', response?.data.pk);
 
         dispatch(
           setUserInfo({
             isVerified: true,
-            token: response?.data?.app_data.data.access_token,
-            role: response?.data?.app_data.data.roles[0],
-            user_id: response?.data?.app_data.data.pk,
+            token: response?.data.access_token,
+            role: response?.data.roles[0],
+            user_id: response?.data.pk,
           }),
         );
-        // Navigate to Home screen after successful login
-        // navigation.navigate('MainTab');
+      } else if (response?.StatusCode === 6001) {
+        Alert.alert('Error', response?.data?.message.toUpperCase());
+      } else {
+        Alert.alert('Error', 'Something went wrong');
       }
     } catch (error) {
       console.log(error);

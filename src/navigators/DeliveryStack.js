@@ -15,7 +15,7 @@ import ReusableBottomSheet from '../component/ReusableBottomSheet';
 import OtpModal from '../component/OtpModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setUserInfo} from '../redux/slices/userSlice';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import DeliveryItem from '../component/DeliveryItem';
 import useGetapi from '../hooks/useGetapi';
 
@@ -81,12 +81,16 @@ const DATA = [
 
 const PendingScreen = ({showBottomSheet}) => {
 
-  // const { data } = useGetapi("activities/delivery-boy-view-pending/");
-
+  const { data } = useGetapi(`activities/delivery-boy-view-pending/`);
+  // console.log('activities/delivery-boy-view-pending/:', data);
+  const combinedOrders = data?.data?.assigned_orders.concat(
+    data?.data?.returned_orders,
+  );
+  
   return (
     <View style={styles.listContainer}>
       <FlatList
-        data={DATA.filter(item => item.status === 'Pending')}
+        data={combinedOrders}
         renderItem={({item}) => (
           <DeliveryItem item={item} showBottomSheet={showBottomSheet} />
         )}

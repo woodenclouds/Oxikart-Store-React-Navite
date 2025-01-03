@@ -31,6 +31,9 @@ const ProfileScreen = () => {
   const {data, loading, error} = useGetapi(
     `accounts/single-view-store-admin/${user_id}/`,
   );
+  
+  console.log("profile screen:",user_id);
+  
   if (loading) {
     return <Loading />;
   }

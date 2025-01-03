@@ -2,7 +2,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import MainTab from './TabNavigations';
 import Adddelivery from '../modules/deliveryboys/adddeliveryboy/Adddelivery';
 import EditScreen from '../modules/deliveryboys/EditScreen';
-import DBDetailsScreen from '../modules/deliveryboys/DBDetailsScreen';
+import DeliveryBoySingle from '../modules/deliveryboys/DeliveryBoySingle';
+
 
 const Stack = createStackNavigator();
 
@@ -20,8 +21,8 @@ const AppStack = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="DBDetails"
-        component={DBDetailsScreen}
+        name="DBSingle"
+        component={DeliveryBoySingle}
         options={{headerShown: false}}
       />
       <Stack.Screen

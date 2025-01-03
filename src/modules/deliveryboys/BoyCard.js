@@ -50,7 +50,7 @@ const BoyCard = ({item}) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DBDetails', {id: item.id})}
+      onPress={() => navigation.navigate('DBSingle', {id: item.id})}
       style={styles.container}>
       <Image
         source={{uri: item.image ? item.image : 'https://via.placeholder.com/150'}}

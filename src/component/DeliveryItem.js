@@ -14,12 +14,19 @@ const DeliveryItem = ({item, showBottomSheet}) => {
         style={styles.gradient}>
         <View style={styles.itemTopRow}>
           <ColorBox width={40} height={40} />
-          <Text style={styles.idNumber}>{item.idNumber}</Text>
-          {item.status === 'Pending' ? (
-            <TouchableOpacity style={styles.button} onPress={showBottomSheet}>
-              <Text style={styles.btnText}>Deliver</Text>
-            </TouchableOpacity>
-          ) : (
+          <Text style={styles.idNumber}>{item.id}</Text>
+          {/* {item.status === 'Pending' ? ( */}
+          <TouchableOpacity
+            style={[
+              styles.button,
+              item?.status === 'ready_for_delivery' && {
+                backgroundColor: '#007DDC',
+              },
+            ]}
+            onPress={showBottomSheet}>
+            <Text style={styles.btnText}>Deliver</Text>
+          </TouchableOpacity>
+          {/* ) : (
             <Text
               style={[
                 styles.status,
@@ -27,12 +34,12 @@ const DeliveryItem = ({item, showBottomSheet}) => {
               ]}>
               {item.status}
             </Text>
-          )}
+          )} */}
         </View>
       </LinearGradient>
       <View style={styles.bottomRow}>
         <PhoneIcon width={20} height={20} />
-        <Text style={styles.number}>+91 906 113 2363</Text>
+        <Text style={styles.number}>{item?.buyer_details?.phone}</Text>
         {!activeHide ? (
           <TouchableOpacity onPress={() => setActiveHide(!activeHide)}>
             <View style={styles.detailsRow}>
@@ -56,13 +63,12 @@ const DeliveryItem = ({item, showBottomSheet}) => {
           <View>
             <Text style={styles.addressLabel}>Deliver address :</Text>
             <Text style={styles.addressText}>
-              Thalirath house thoppipala PO Swaraj Kattappana, Idukki Kerala,
-              685511
+              {item?.buyer_details?.address}
             </Text>
           </View>
           <View>
             <Text style={styles.addressLabel}>Phone number :</Text>
-            <Text style={styles.addressText}>+91 9995819386</Text>
+            <Text style={styles.addressText}>{item?.buyer_details?.phone}</Text>
           </View>
         </View>
       )}
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   button: {
-    backgroundColor: '#007DDC',
+    backgroundColor: '#F7A200',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 4,
