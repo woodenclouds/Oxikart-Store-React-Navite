@@ -4,7 +4,7 @@ import AuthStack from './AuthStackNavigation';
 import MainTab from './TabNavigations';
 import AppStack from './StackNavigations';
 import {getItem} from '../utils/functions';
-import DeliveryStack from './DeliveryStack';
+import DeliveryStack from '../modules/delivery/DeliveryStack';
 import { setUserInfo } from '../redux/slices/userSlice';
 
 const AppNavigator = () => {

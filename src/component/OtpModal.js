@@ -29,6 +29,10 @@ const OtpModal = () => {
       }
     }
   };
+  
+  const handleSubmit = () => {
+
+  };
 
   return (
     <View style={styles.container}>

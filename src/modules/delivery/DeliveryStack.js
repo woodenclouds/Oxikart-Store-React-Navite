@@ -1,5 +1,4 @@
 import {
-  FlatList,
   StatusBar,
   StyleSheet,
   Text,
@@ -8,120 +7,28 @@ import {
 } from 'react-native';
 import React, {useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import Logo from '../assets/svg-icons/oxykart-logo.svg';
-import BoxIcon from '../assets/svg-icons/box-icon.svg';
+import Logo from '../../assets/svg-icons/oxykart-logo.svg';
+import BoxIcon from '../../assets/svg-icons/box-icon.svg';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import ReusableBottomSheet from '../component/ReusableBottomSheet';
-import OtpModal from '../component/OtpModal';
+import ReusableBottomSheet from '../../component/ReusableBottomSheet';
+import OtpModal from '../../component/OtpModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setUserInfo} from '../redux/slices/userSlice';
+import {setUserInfo} from '../../redux/slices/userSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import DeliveryItem from '../component/DeliveryItem';
-import useGetapi from '../hooks/useGetapi';
+import PendingScreen from './PendingScreen';
+import CompletedScreen from './CompletedScreen';
+import useGetapi from '../../hooks/useGetapi';
 
 const Tab = createMaterialTopTabNavigator();
 
-const DATA = [
-  {
-    id: '1',
-    status: 'Delivered',
-    idNumber: 'ID:123746289374',
-    contact: '+91 906 113 2363',
-  },
-  {
-    id: '2',
-    status: 'Returned',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  {
-    id: '3',
-    status: 'Delivered',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  {
-    id: '4',
-    status: 'Pending',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  {
-    id: '5',
-    status: 'Pending',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  {
-    id: '6',
-    status: 'Pending',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  {
-    id: '7',
-    status: 'Pending',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  {
-    id: '8',
-    status: 'Pending',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  {
-    id: '9',
-    status: 'Pending',
-    idNumber: 'ID:123746289374',
-    deliveryBoy: 'Anooj Reji',
-  },
-  // Add more data as needed
-];
+const DeliveryStack = () => {
+  const dispatch = useDispatch();
 
-const PendingScreen = ({showBottomSheet}) => {
+  const {data, refresh, setRefresh} = useGetapi(`activities/delivery-boy-view-pending/`);
 
-  const { data } = useGetapi(`activities/delivery-boy-view-pending/`);
-  // console.log('activities/delivery-boy-view-pending/:', data);
   const combinedOrders = data?.data?.assigned_orders.concat(
     data?.data?.returned_orders,
   );
-  
-  return (
-    <View style={styles.listContainer}>
-      <FlatList
-        data={combinedOrders}
-        renderItem={({item}) => (
-          <DeliveryItem item={item} showBottomSheet={showBottomSheet} />
-        )}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContent}
-        style={{backgroundColor: '#fff'}}
-      />
-    </View>
-  );
-};
-
-const CompletedScreen = ({showBottomSheet}) => (
-  <View style={styles.listContainer}>
-    <FlatList
-      data={DATA.filter(
-        item => item.status === 'Delivered' || item.status === 'Returned',
-      )}
-      renderItem={({item}) => (
-        <DeliveryItem item={item} showBottomSheet={showBottomSheet} />
-      )}
-      keyExtractor={item => item.id}
-      contentContainerStyle={styles.listContent}
-      style={{backgroundColor: '#fff'}}
-    />
-  </View>
-);
-
-const DeliveryStack = () => {
-  const bottomSheetRef = useRef(null);
-
-  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     AsyncStorage.clear()
@@ -132,9 +39,6 @@ const DeliveryStack = () => {
     );
   };
 
-  const showBottomSheet = () => {
-    bottomSheetRef.current?.openSheet();
-  };
   return (
     <View style={{flex: 1}}>
       <StatusBar backgroundColor="#007DDC" barStyle="light-content" />
@@ -153,7 +57,7 @@ const DeliveryStack = () => {
               </View>
               <View style={styles.bottomData}>
                 <Text style={styles.text1}>Today’s deliveries :</Text>
-                <Text style={styles.text2}>40</Text>
+                <Text style={styles.text2}>{combinedOrders?.length}</Text>
               </View>
             </View>
             <LinearGradient
@@ -176,18 +80,13 @@ const DeliveryStack = () => {
             tabBarStyle: {elevation: 0},
           }}>
           <Tab.Screen name="Pending">
-            {() => <PendingScreen showBottomSheet={showBottomSheet} />}
+            {() => <PendingScreen combinedOrders={combinedOrders} refresh={refresh} setRefresh={setRefresh}/>}
           </Tab.Screen>
           <Tab.Screen name="Completed">
-            {() => <CompletedScreen showBottomSheet={showBottomSheet} />}
+            {() => <CompletedScreen/>}
           </Tab.Screen>
         </Tab.Navigator>
       </View>
-      <ReusableBottomSheet
-        ref={bottomSheetRef}
-        content={<OtpModal />} // Content of the sheet
-        height="60%" // Height of the sheet (customizable)
-      />
     </View>
   );
 };

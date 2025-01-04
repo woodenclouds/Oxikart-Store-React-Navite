@@ -44,6 +44,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
 
   const { deliveryBoys, status, error } = useSelector((state) => state.deliveryBoys);
+  const {user_id} = useSelector(state => state.user);
 
   useEffect(() => {
     if (status === 'idle') {
@@ -67,7 +68,7 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    axiosInstance.get('accounts/store-orders-list/').then(res => {
+    axiosInstance.get(`accounts/store-orders-list/?store_pk=${user_id}`).then(res => {
       setOrders(res.data.data);
     });
   }, []);
@@ -232,7 +233,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
       <FlatList
-        contentContainerStyle={{paddingHorizontal: 20, gap: 10}}
+        contentContainerStyle={{paddingHorizontal: 20}}
         data={orders}
         renderItem={({item}) => (
           <OrderCard

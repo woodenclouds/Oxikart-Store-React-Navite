@@ -48,8 +48,8 @@ const AssignedCard = ({item}) => {
           <Text style={styles.addressLabel}>Delivery address :</Text>
           <Text style={styles.address}>
             {item.address[0].address}
-            {item.address[0].street},{item.address[0].state},
-            {item.address[0].country},{item.address[0].pincode}
+            {'\n'}
+            {item.address[0].street}, {item.address[0].state}, {item.address[0].country}, {item.address[0].pincode}
           </Text>
           <Text style={styles.addressLabel}>Phone number:</Text>
           <Text style={styles.address}>+91 {item.address[0].phone}</Text>

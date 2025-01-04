@@ -119,6 +119,7 @@ const OrderScreen = () => {
         {active === 'Pending' ? (
           <FlatList
             data={orders}
+            contentContainerStyle={{paddingVertical: 16}}
             renderItem={({item}) => (
               <OrderCard
                 item={item}
@@ -221,7 +222,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D0D2D4',
     borderRadius: 8,
-    marginBottom: 10,
     paddingHorizontal: 10,
   },
   searchInput: {

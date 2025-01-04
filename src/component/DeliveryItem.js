@@ -3,8 +3,14 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {ColorBox, DownArrrow, PhoneIcon, UpArrow} from '../assets/svg-icons';
 
-const DeliveryItem = ({item, showBottomSheet}) => {
+const DeliveryItem = ({item, setVisible, setSelectedOrder}) => {
   const [activeHide, setActiveHide] = useState(false);
+
+  const handleDeliver = () => {
+    setSelectedOrder(item);
+    setVisible(true);
+  };
+
   return (
     <View style={styles.itemContainer}>
       <LinearGradient
@@ -23,7 +29,7 @@ const DeliveryItem = ({item, showBottomSheet}) => {
                 backgroundColor: '#007DDC',
               },
             ]}
-            onPress={showBottomSheet}>
+            onPress={handleDeliver}>
             <Text style={styles.btnText}>Deliver</Text>
           </TouchableOpacity>
           {/* ) : (
