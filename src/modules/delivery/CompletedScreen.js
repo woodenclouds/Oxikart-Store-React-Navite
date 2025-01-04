@@ -3,7 +3,7 @@ import useGetapi from '../../hooks/useGetapi';
 import DeliveryItem from '../../component/DeliveryItem';
 
 const CompletedScreen = () => {
-//   const {data} = useGetapi('activities/delivery-boy-view-delivered/');
+  // const {data} = useGetapi('activities/delivery-boy-view-completed/');
   return (
     <View style={styles.listContainer}>
       {/* <FlatList

@@ -84,6 +84,11 @@ const PendingScreen = ({combinedOrders, refresh, setRefresh}) => {
         style={{backgroundColor: '#fff'}}
         refreshing={refresh}
         onRefresh={() => setRefresh(!refresh)}
+        ListEmptyComponent={
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: "#000", marginTop: 10}}>No pending orders</Text>
+          </View>
+        }
       />
 
       <Modal
