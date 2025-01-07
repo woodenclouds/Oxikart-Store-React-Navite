@@ -21,26 +21,20 @@ const DeliveryItem = ({item, setVisible, setSelectedOrder}) => {
         <View style={styles.itemTopRow}>
           <ColorBox width={40} height={40} />
           <Text style={styles.idNumber}>{item.id}</Text>
-          {/* {item.status === 'Pending' ? ( */}
-          <TouchableOpacity
-            style={[
-              styles.button,
-              item?.status === 'ready_for_delivery' && {
-                backgroundColor: '#007DDC',
-              },
-            ]}
-            onPress={handleDeliver}>
-            <Text style={styles.btnText}>Deliver</Text>
-          </TouchableOpacity>
-          {/* ) : (
-            <Text
+          {item.status === 'delivered' ? (
+            <Text style={styles.status}>{item.status.toUpperCase()}</Text>
+          ) : (
+            <TouchableOpacity
               style={[
-                styles.status,
-                item.status === 'Delivered' && {color: '#009262'},
-              ]}>
-              {item.status}
-            </Text>
-          )} */}
+                styles.button,
+                item?.status === 'ready_for_delivery' && {
+                  backgroundColor: '#007DDC',
+                },
+              ]}
+              onPress={handleDeliver}>
+              <Text style={styles.btnText}>Deliver</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </LinearGradient>
       <View style={styles.bottomRow}>
@@ -90,7 +84,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: '#ddd',
-    margin: 5,
+    marginVertical: 5,
     borderRadius: 5,
     gap: 15,
   },
@@ -171,7 +165,7 @@ const styles = StyleSheet.create({
   status: {
     fontWeight: '500',
     fontSize: 12,
-    color: '#F7A200',
+    color: '#007DDC',
   },
   bottomRow: {
     flexDirection: 'row',
