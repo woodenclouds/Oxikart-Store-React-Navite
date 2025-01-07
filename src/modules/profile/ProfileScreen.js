@@ -32,11 +32,10 @@ const ProfileScreen = () => {
     `accounts/single-view-store-admin/${user_id}/`,
   );
   
-  console.log("profile screen:",user_id);
-  
   if (loading) {
     return <Loading />;
   }
+  
   if (error) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

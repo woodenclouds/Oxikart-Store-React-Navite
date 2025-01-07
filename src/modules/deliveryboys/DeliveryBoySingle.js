@@ -1,6 +1,5 @@
 import {
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,12 +7,9 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axiosInstance from '../../component/api';
-import DetailsCard from '../../component/DetailsCard';
 import Header from '../../component/Header';
 import {useNavigation} from '@react-navigation/native';
 import {icons} from '../../assets/icons';
-import {formatDateString} from '../../utils/functions';
-import useGetapi from '../../hooks/useGetapi';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import PersonalDetails from './PersonalDetails';
 import DeliveryHistory from './DeliveryHistory';

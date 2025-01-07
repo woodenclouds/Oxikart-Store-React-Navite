@@ -19,10 +19,16 @@ const AssignedCard = ({item}) => {
           <Text style={styles.purchaseId}>ID:{item.purchase_id}</Text>
         </View>
         <View>
-          <Text style={{color: '#E9A21B'}}>
+          <Text
+            style={[
+              styles.status,
+              item.deliveryboys[0].status === 'ready_for_delivery' && {
+                color: '#E9A21B',
+              },
+            ]}>
             {item.deliveryboys[0].status === 'ready_for_delivery'
               ? 'Ready For Delivery'
-              : ''}
+              : 'Delivered'}
           </Text>
         </View>
       </LinearGradient>
@@ -49,7 +55,8 @@ const AssignedCard = ({item}) => {
           <Text style={styles.address}>
             {item.address[0].address}
             {'\n'}
-            {item.address[0].street}, {item.address[0].state}, {item.address[0].country}, {item.address[0].pincode}
+            {item.address[0].street}, {item.address[0].state},{' '}
+            {item.address[0].country}, {item.address[0].pincode}
           </Text>
           <Text style={styles.addressLabel}>Phone number:</Text>
           <Text style={styles.address}>+91 {item.address[0].phone}</Text>
@@ -67,6 +74,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#eee',
     borderRadius: 5,
+    marginBottom: 8,
   },
   row: {
     paddingVertical: 20,
@@ -80,6 +88,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#474747',
     fontWeight: '500',
+  },
+  status: {
+    fontSize: 12,
+    color: '#009262',
   },
   detailsRow: {
     paddingHorizontal: 3,

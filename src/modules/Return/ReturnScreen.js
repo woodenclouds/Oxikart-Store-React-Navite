@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -31,6 +32,7 @@ const ReturnScreen = () => {
   const [loading, setLoading] = useState(true);
 
   const {deliveryBoys} = useSelector(state => state.deliveryBoys);
+  const {user_id} = useSelector(state => state.user);
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -44,8 +46,8 @@ const ReturnScreen = () => {
       try {
         const endpoint =
           active === 'Pending'
-            ? 'accounts/list-return-assign-orders/'
-            : 'accounts/view-return-request-orders/';
+            ? `accounts/view-return-request-orders/?store_pk=${user_id}`
+            : 'accounts/list-return-assign-orders/';
         const response = await axiosInstance.get(endpoint);
         active === 'Pending'
           ? setReturnOrders(response.data.data)
@@ -66,10 +68,9 @@ const ReturnScreen = () => {
         purchase_id: selectedOrder.purchase_id,
         pickup_boy: selectedDeliveryBoy.id,
       });
-      console.log(res, 'success');
-
       if (res.StatusCode === 6000) {
         setModalVisible(false);
+        ToastAndroid.show('Assigned successfully', ToastAndroid.SHORT);
       } else {
         console.log('Unexpected StatusCode:', res.StatusCode);
       }
@@ -170,7 +171,7 @@ const ReturnScreen = () => {
         <View style={styles.modalContainer}>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.modalLabel}>Order ID :</Text>
-            <Text style={styles.modalInput}>{selectedOrder?.purchase}</Text>
+            <Text style={styles.modalInput}>{selectedOrder?.purchase_id}</Text>
           </View>
           <View style={styles.dropdownContainer}>
             <Text style={styles.modalLabel}>Pickup boy</Text>

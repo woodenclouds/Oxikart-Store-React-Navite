@@ -1,9 +1,9 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {ColorBox, TimeIcon} from '../../assets/svg-icons';
 import ProfileIcon from '../../assets/svg-icons/ProfileIcon';
-import UpArrow from '../../assets/svg-icons/UpArrow';
+import {formatDateTimeString } from '../../utils/functions';
 
 const ReturnCard = ({item}) => {
   const [open, setOpen] = useState(false);
@@ -17,7 +17,7 @@ const ReturnCard = ({item}) => {
         <View style={styles.row}>
           <ColorBox />
           <View>
-            <Text style={styles.rowText}>ID:123746289374</Text>
+            <Text style={styles.rowText}>ID: {item.purchase}</Text>
           </View>
         </View>
         <View>
@@ -30,11 +30,11 @@ const ReturnCard = ({item}) => {
           <Text style={[styles.bottomText, {color: '#717171'}]}>
             Pickup boy :
           </Text>
-          <Text style={[styles.bottomText, {fontWeight: 500}]}>Anooj Reji</Text>
+          <Text style={[styles.bottomText, {fontWeight: 500}]}>{item.delivery_boy.full_name}</Text>
         </View>
         <View style={styles.bottomRow}>
           <TimeIcon />
-          <Text style={styles.bottomText}>Apr 21, 2024 10:03 am</Text>
+          <Text style={styles.bottomText}>{formatDateTimeString(item.delivery_boy.date_added)}</Text>
         </View>
       </View>
     </View>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   bottomRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
   },
   bottomText: {
     fontSize: 12,

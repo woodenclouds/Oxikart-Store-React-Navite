@@ -19,6 +19,7 @@ import {assignOrder} from '../../services/orderService';
 import TitleHeader from '../../component/TitleHeader';
 import CustomButton from '../../component/CustomButton';
 import {useSelector} from 'react-redux';
+import Loading from '../../component/Loading';
 
 const OrderScreen = () => {
   const [active, setActive] = useState('Pending');
@@ -28,6 +29,8 @@ const OrderScreen = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [assignedOrders, setAssignedOrder] = useState([]);
   const [selectedDeliveryBoy, setSelectedDeliveryBoy] = useState(null);
+  const [searchText, setSearchText] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const {deliveryBoys} = useSelector(state => state.deliveryBoys);
 
@@ -64,8 +67,6 @@ const OrderScreen = () => {
         selectedOrder?.purchase_id,
         selectedDeliveryBoy.id,
       );
-      console.log(res, 'success');
-      
       if (res.StatusCode === 6000) {
         setModalVisible(false);
         ToastAndroid.show('Assigned successfully', ToastAndroid.SHORT);
@@ -74,6 +75,22 @@ const OrderScreen = () => {
       }
     } catch (error) {
       console.error('Error assigning order:', error);
+    }
+  };
+
+  const fetchOrders = async query => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(
+        `accounts/store-orders-list/?store_pk=${user_id}&q=${query}/`,
+      );
+      console.log("Search order:", response);
+      
+      // setOrders(data.orders);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -113,10 +130,17 @@ const OrderScreen = () => {
           <TextInput
             style={styles.searchInput}
             placeholder="Search by Product ID"
+            value={searchText}
+            onChangeText={text => {
+              setSearchText(text);
+              fetchOrders(text);
+            }}
             placeholderTextColor="#474747"
           />
         </View>
-        {active === 'Pending' ? (
+        {loading ? (
+          <Loading />
+        ) : active === 'Pending' ? (
           <FlatList
             data={orders}
             contentContainerStyle={{paddingVertical: 16}}
@@ -140,6 +164,7 @@ const OrderScreen = () => {
           <FlatList
             data={assignedOrders}
             renderItem={({item}) => <AssignedCard item={item} />}
+            contentContainerStyle={{paddingVertical: 16}}
             keyExtractor={item => item.id}
             refreshing={refresh}
             onRefresh={() => setRefresh(!refresh)}

@@ -32,7 +32,7 @@ const DeliveryItem = ({item, setVisible, setSelectedOrder}) => {
                 },
               ]}
               onPress={handleDeliver}>
-              <Text style={styles.btnText}>Deliver</Text>
+              <Text style={styles.btnText}>{item?.status === 'ready_for_delivery' ? "Deliver" : "Pickup"}</Text>
             </TouchableOpacity>
           )}
         </View>
