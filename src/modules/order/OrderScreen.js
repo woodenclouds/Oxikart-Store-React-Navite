@@ -66,6 +66,7 @@ const OrderScreen = () => {
       const res = await assignOrder(
         selectedOrder?.purchase_id,
         selectedDeliveryBoy.id,
+        selectedOrder?.id,
       );
       if (res.StatusCode === 6000) {
         setModalVisible(false);

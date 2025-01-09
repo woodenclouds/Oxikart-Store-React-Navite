@@ -11,11 +11,12 @@ const fetchDeliveryBoys = async () => {
   }
 };
 
-const assignOrder = async (purchase_id, delivery_boy) => {
+const assignOrder = async (purchase_id, delivery_boy, purchase_item_id) => {
   try {
     const res = await axiosInstance.post('accounts/assign-orders/', {
       purchase_id,
       delivery_boy,
+      purchase_item_id,
     });
     return res;
   } catch (error) {

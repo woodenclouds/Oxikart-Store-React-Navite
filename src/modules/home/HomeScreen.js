@@ -94,6 +94,7 @@ const HomeScreen = () => {
       const res = await assignOrder(
         selectedOrder?.purchase_id,
         selectedDeliveryBoy.id,
+        selectedOrder?.id,
       );
       if (res && res.data) {
         if (res.StatusCode === 6000) {

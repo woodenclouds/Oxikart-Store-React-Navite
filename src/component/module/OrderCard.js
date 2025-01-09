@@ -14,7 +14,9 @@ const OrderCard = ({item, openModal, setSelectedOrder}) => {
         <ColorBox />
         <View style={styles.details}>
           <Text style={styles.purchaseId}>
-            {item?.purchase_id || item?.purchase}
+            {item?.purchased_product_details[0]?.product_code +
+              ' - ' +
+              item?.purchase_id || item?.purchase}
           </Text>
           {item.delivery_address ? (
             <Text numberOfLines={1} ellipsizeMode="tail" style={styles.address}>
