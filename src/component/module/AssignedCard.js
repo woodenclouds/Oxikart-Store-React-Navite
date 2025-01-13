@@ -16,17 +16,21 @@ const AssignedCard = ({item}) => {
         style={styles.row}>
         <ColorBox />
         <View style={{flex: 1, marginLeft: 20}}>
-          <Text style={styles.purchaseId}>ID:{item.purchase_id}</Text>
+          <Text style={styles.purchaseId}>
+            {item?.purchased_product_details[0]?.product_code +
+              ' - ' +
+              item?.purchase_id}
+          </Text>
         </View>
         <View>
           <Text
             style={[
               styles.status,
-              item.deliveryboys[0].status === 'ready_for_delivery' && {
+              item?.deliveryboys[0]?.status === 'ready_for_delivery' && {
                 color: '#E9A21B',
               },
             ]}>
-            {item.deliveryboys[0].status === 'ready_for_delivery'
+            {item?.deliveryboys[0]?.status === 'ready_for_delivery'
               ? 'Ready For Delivery'
               : 'Delivered'}
           </Text>
@@ -35,10 +39,8 @@ const AssignedCard = ({item}) => {
       <View style={styles.detailsRow}>
         <View style={styles.name}>
           <ProfileIcon height={20} width={20} />
-          <Text style={{color: '#717171', marginLeft: 10}}>
-            Delivery boy :{' '}
-          </Text>
-          <Text style={{color: '#141414'}}>
+          <Text style={styles.detailsText}>Delivery boy : </Text>
+          <Text style={styles.nameText}>
             {item.deliveryboys[0].delivery_boy.full_name}
           </Text>
         </View>
@@ -100,6 +102,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  detailsText: {
+    color: '#717171',
+    marginLeft: 10,
+    fontWeight: '400',
+    fontSize: 12,
+  },
+  nameText: {
+    color: '#474747',
+    fontWeight: '500',
+    fontSize: 12,
+  },
   name: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -112,6 +125,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: '#007DDC',
     fontSize: 12,
+    fontWeight: "500"
   },
   addressContainer: {
     backgroundColor: '#F6F6F6',

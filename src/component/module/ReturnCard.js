@@ -3,10 +3,12 @@ import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {ColorBox, TimeIcon} from '../../assets/svg-icons';
 import ProfileIcon from '../../assets/svg-icons/ProfileIcon';
-import {formatDateTimeString } from '../../utils/functions';
+import {formatDateTimeString} from '../../utils/functions';
 
 const ReturnCard = ({item}) => {
   const [open, setOpen] = useState(false);
+  console.log(item, 'returned orders');
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -17,7 +19,11 @@ const ReturnCard = ({item}) => {
         <View style={styles.row}>
           <ColorBox />
           <View>
-            <Text style={styles.rowText}>ID: {item.purchase}</Text>
+            <Text style={styles.rowText}>
+              {item?.purchased_product_details[0]?.product_code +
+                ' - ' +
+                item?.purchase_id}
+            </Text>
           </View>
         </View>
         <View>
@@ -30,11 +36,13 @@ const ReturnCard = ({item}) => {
           <Text style={[styles.bottomText, {color: '#717171'}]}>
             Pickup boy :
           </Text>
-          <Text style={[styles.bottomText, {fontWeight: 500}]}>{item.delivery_boy.full_name}</Text>
+          <Text style={[styles.bottomText, {fontWeight: 500}]}>
+            {item.delivery_boy.full_name}
+          </Text>
         </View>
         <View style={styles.bottomRow}>
           <TimeIcon />
-          <Text style={styles.bottomText}>{formatDateTimeString(item.delivery_boy.date_added)}</Text>
+          <Text style={styles.bottomText}>{item.assigned_date}</Text>
         </View>
       </View>
     </View>
@@ -60,7 +68,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 15,
     alignItems: 'center',
   },
   rowText: {

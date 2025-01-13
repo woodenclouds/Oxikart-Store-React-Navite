@@ -27,8 +27,8 @@ import Loading from '../../component/Loading';
 import BottomSheetModal from '../../utils/components/BottomSheetModal';
 import Dropdown from '../../utils/components/Dropdown';
 import {assignOrder} from '../../services/orderService';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchDeliveryBoysAsync } from '../../redux/slices/deliveryBoysSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchDeliveryBoysAsync} from '../../redux/slices/deliveryBoysSlice';
 import CustomButton from '../../component/CustomButton';
 
 const HomeScreen = () => {
@@ -43,7 +43,9 @@ const HomeScreen = () => {
 
   const dispatch = useDispatch();
 
-  const { deliveryBoys, status, error } = useSelector((state) => state.deliveryBoys);
+  const {deliveryBoys, status, error} = useSelector(
+    state => state.deliveryBoys,
+  );
   const {user_id} = useSelector(state => state.user);
 
   useEffect(() => {
@@ -68,9 +70,11 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    axiosInstance.get(`accounts/store-orders-list/?store_pk=${user_id}`).then(res => {
-      setOrders(res.data.data);
-    });
+    axiosInstance
+      .get(`accounts/store-orders-list/?store_pk=${user_id}`)
+      .then(res => {
+        setOrders(res.data.data);
+      });
   }, []);
 
   if (loading) {
@@ -83,8 +87,8 @@ const HomeScreen = () => {
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>{error}</Text>
       </View>
-    )
-  } 
+    );
+  }
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -244,6 +248,11 @@ const HomeScreen = () => {
           />
         )}
         keyExtractor={item => item.id}
+        ListEmptyComponent={
+          <View style={{alignItems: 'center', marginTop: 20}}>
+            <Text style={{color: '#000'}}>No orders found</Text>
+          </View>
+        }
       />
       <BottomSheetModal
         isVisible={modalVisible}
@@ -270,7 +279,7 @@ const HomeScreen = () => {
             />
           </View>
         </View>
-        <CustomButton title="Confirm" onPress={handleSubmit}/>
+        <CustomButton title="Confirm" onPress={handleSubmit} />
       </BottomSheetModal>
     </View>
   );
@@ -319,14 +328,14 @@ const styles = StyleSheet.create({
     right: 0,
   },
   modalContainer: {
-    paddingHorizontal: 20, 
-    paddingTop: 25, 
+    paddingHorizontal: 20,
+    paddingTop: 25,
     paddingBottom: 30,
     gap: 8,
   },
   modalLabel: {
     marginBottom: 8,
-    color: "#747474",
+    color: '#747474',
   },
   modalInput: {
     borderWidth: 1,
@@ -334,10 +343,10 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 16,
     borderRadius: 5,
-    color: "#C3C3C3"
+    color: '#C3C3C3',
   },
   dropdownContainer: {
-    marginTop: 10
+    marginTop: 10,
   },
   errorContainer: {
     justifyContent: 'center',

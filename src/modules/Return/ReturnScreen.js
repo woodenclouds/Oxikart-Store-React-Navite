@@ -67,6 +67,7 @@ const ReturnScreen = () => {
       const res = await axiosInstance.post('accounts/assign-return-orders/', {
         purchase_id: selectedOrder.purchase_id,
         pickup_boy: selectedDeliveryBoy.id,
+        purchase_item_id: selectedOrder.id,
       });
       if (res.StatusCode === 6000) {
         setModalVisible(false);
@@ -114,7 +115,7 @@ const ReturnScreen = () => {
                 color: active === 'Assigned' ? '#4A4D4E' : '#6E7475',
                 fontSize: 14,
               }}>
-              Returned
+              Assigned
             </Text>
           </TouchableOpacity>
         </View>
@@ -161,7 +162,6 @@ const ReturnScreen = () => {
               </View>
             }
           />
-          // <ReturnCard />
         )}
       </View>
       <BottomSheetModal
